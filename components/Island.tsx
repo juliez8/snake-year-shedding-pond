@@ -40,25 +40,21 @@ export default function Island({ snakes }: IslandProps) {
           return (
             <div
               key={snake.id}
-              className="absolute"
-              style={{ left, top }}
+              className="absolute cursor-pointer transition-transform hover:scale-110"
+              style={{
+                left,
+                top,
+                transform: 'translate(-50%, -50%)',
+              }}
+              onClick={() => setSelectedSnake(snake)}
             >
-              {/* Position centering wrapper */}
-              <div className="-translate-x-1/2 -translate-y-1/2">
-
-                {/* Wiggle wrapper */}
-                <div
-                  className="cursor-pointer transition-transform duration-200 hover:animate-wiggle"
-                  onClick={() => setSelectedSnake(snake)}
-                >
-                  <SnakeDisplay
-                    drawing={snake.drawing_data}
-                    opacity={opacity}
-                    width={150}
-                    height={90}
-                  />
-                </div>
-
+              <div className="hover:animate-wiggle">
+                <SnakeDisplay
+                  drawing={snake.drawing_data}
+                  opacity={opacity}
+                  width={150}
+                  height={90}
+                />
               </div>
             </div>
           );

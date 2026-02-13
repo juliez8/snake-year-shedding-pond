@@ -67,50 +67,67 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-5 space-y-5">
+    <div className="bg-white rounded-2xl shadow-xl p-5 space-y-4 w-full max-w-[340px]">
 
-      <h2 className="text-xl font-semibold text-gray-900">
+      <h2 className="text-lg font-semibold text-gray-900 text-center">
         Draw Your Snake
       </h2>
 
-      <ColorPicker
-        selectedColor={selectedColor}
-        onColorChange={setSelectedColor}
-      />
+      {/* Color Picker - contained within panel */}
+      <div className="w-full overflow-hidden">
+        <ColorPicker
+          selectedColor={selectedColor}
+          onColorChange={setSelectedColor}
+        />
+      </div>
 
-      <SnakeCanvas
-        width={340}
-        height={340}
-        selectedColor={selectedColor}
-        onDrawingChange={setDrawingData}
-        clearTrigger={clearTrigger}
-      />
+      {/* Canvas - properly sized */}
+      <div className="w-full">
+        <SnakeCanvas
+          width={300}
+          height={300}
+          selectedColor={selectedColor}
+          onDrawingChange={setDrawingData}
+          clearTrigger={clearTrigger}
+        />
+      </div>
 
-      <button
-        onClick={handleClear}
-        className="text-xs text-gray-500 hover:text-gray-800"
-      >
-        Clear
-      </button>
+      {/* Clear button */}
+      <div className="flex justify-end">
+        <button
+          onClick={handleClear}
+          className="text-xs text-gray-500 hover:text-gray-800 underline"
+        >
+          Clear
+        </button>
+      </div>
 
+      {/* Message textarea */}
       <textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={140}
+        rows={3}
         placeholder="What do you wish to shed?"
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-orange-400 text-sm"
+        className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm"
       />
 
+      <div className="text-right text-xs text-gray-500">
+        {message.length}/140
+      </div>
+
+      {/* Error message */}
       {error && (
-        <div className="text-red-600 text-sm">
+        <div className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">
           {error}
         </div>
       )}
 
+      {/* Submit button */}
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="w-full py-2.5 bg-orange-600 text-white rounded-xl hover:bg-orange-700 disabled:bg-gray-400 transition text-sm"
+        className="w-full py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
       >
         {isSubmitting ? 'Releasing...' : 'Release Snake'}
       </button>

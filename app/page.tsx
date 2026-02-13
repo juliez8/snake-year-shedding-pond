@@ -38,25 +38,26 @@ export default function HomePage() {
   }, [fetchSnakes]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-12 px-6 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto space-y-10">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-8 px-4 sm:py-12 sm:px-6">
+      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
 
-        {/* Header */}
+        {/* Header - ALWAYS VISIBLE */}
         <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold text-gray-900">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
             🐍 Shedding Island
           </h1>
 
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
             Draw a snake and attach what you wish to shed.
             Watch it fade over 8 hours as you step into the new year.
           </p>
 
-          <div className="flex justify-center gap-4 mt-6">
+          {/* Buttons - ALWAYS VISIBLE on both mobile and desktop */}
+          <div className="flex justify-center gap-3 sm:gap-4 mt-6 flex-wrap">
             {isMobile && (
               <button
                 onClick={() => setShowModal(true)}
-                className="px-6 py-3 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700 transition-colors text-sm sm:text-base"
               >
                 Draw a Snake
               </button>
@@ -64,43 +65,58 @@ export default function HomePage() {
 
             <a
               href="/gallery"
-              className="px-6 py-3 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700"
+              className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm sm:text-base"
             >
-              Visit Garden
+              Visit Gallery
             </a>
           </div>
         </div>
 
-        {/* Layout */}
-        <div className="flex justify-center">
-          <div className="flex gap-12 items-start w-full max-w-6xl">
-
-            <div className="flex-1 min-w-[300px]">
+        {/* Main Content Area */}
+        <div className="w-full">
+          {isMobile ? (
+            // Mobile: Full width island
+            <div className="w-full">
               <Island snakes={snakes} />
             </div>
+          ) : (
+            // Desktop: Island + Draw Panel side by side
+            <div className="flex justify-center gap-6 lg:gap-12 items-start">
+              {/* Island - flexible width */}
+              <div className="flex-1 min-w-0 max-w-4xl">
+                <Island snakes={snakes} />
+              </div>
 
-            {!isMobile && (
-              <div className="w-[320px] shrink-0">
+              {/* Draw Panel - fixed width */}
+              <div className="w-[340px] flex-shrink-0">
                 <DrawPanel onSuccess={fetchSnakes} />
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        <div className="text-center text-gray-600">
+        {/* Snake count */}
+        <div className="text-center text-gray-600 text-sm">
           {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
         </div>
       </div>
 
       {/* Mobile Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 relative">
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 relative my-8"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"
+              className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl leading-none w-8 h-8 flex items-center justify-center"
+              aria-label="Close"
             >
-              ✕
+              ×
             </button>
 
             <DrawPanel
