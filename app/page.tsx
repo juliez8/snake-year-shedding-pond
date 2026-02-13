@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import Island from '@/components/Island';
 import DrawPanel from '@/components/DrawPanel';
@@ -22,23 +22,23 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Fetch snakes
-  useEffect(() => {
-    const fetchSnakes = async () => {
-      const { data } = await supabase
-        .from('snake_segments')
-        .select('*')
-        .eq('location', 'island')
-        .order('created_at', { ascending: false });
+  // 🔥 reusable fetch
+  const fetchSnakes = useCallback(async () => {
+    const { data } = await supabase
+      .from('snake_segments')
+      .select('*')
+      .eq('location', 'island')
+      .order('created_at', { ascending: false });
 
-      setSnakes(data || []);
-    };
-
-    fetchSnakes();
+    setSnakes(data || []);
   }, []);
 
+  useEffect(() => {
+    fetchSnakes();
+  }, [fetchSnakes]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-12 px-6 overflow-x-hidden">
 
       <div className="max-w-7xl mx-auto space-y-10">
 
@@ -74,23 +74,20 @@ export default function HomePage() {
 
         {/* MAIN LAYOUT */}
         <div className="flex justify-center">
+          <div className="flex gap-10 items-start w-full max-w-6xl">
 
-          <div className="flex gap-12 items-start w-full max-w-6xl">
-
-            {/* ISLAND (always visible + scales naturally) */}
+            {/* Island */}
             <div className="flex-1 min-w-[300px]">
               <Island snakes={snakes} />
             </div>
 
-            {/* DRAW PANEL (hidden on small screens) */}
+            {/* Desktop Draw Panel */}
             {!isMobile && (
-              <div className="w-[360px] shrink-0">
-                <DrawPanel />
+              <div className="w-[320px] shrink-0">
+                <DrawPanel onSuccess={fetchSnakes} />
               </div>
             )}
-
           </div>
-
         </div>
 
         <div className="text-center text-gray-600">
@@ -100,8 +97,9 @@ export default function HomePage() {
 
       {/* MOBILE MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-hidden">
+
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 relative">
 
             <button
               onClick={() => setShowModal(false)}
@@ -110,7 +108,12 @@ export default function HomePage() {
               ✕
             </button>
 
-            <DrawPanel />
+            <DrawPanel
+              onSuccess={() => {
+                fetchSnakes();
+                setShowModal(false);
+              }}
+            />
           </div>
         </div>
       )}
