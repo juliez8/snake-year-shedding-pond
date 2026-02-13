@@ -9,15 +9,19 @@ const COLORS = [
   '#9B1C31',
   '#C2410C',
   '#D97706',
-  '#7A9C5D',
-  '#3E7A5E',
-  '#6B4BBE',
-  '#2F3342',
+  '#7A9E5F',
+  '#3F7F5C',
+  '#6B4DBF',
+  '#2E3440',
 ];
 
-export default function ColorPicker({ selectedColor, onColorChange }: ColorPickerProps) {
+export default function ColorPicker({
+  selectedColor,
+  onColorChange,
+}: ColorPickerProps) {
   return (
-    <div className="flex justify-between items-center gap-3 w-full">
+    <div className="flex gap-3 justify-center flex-nowrap overflow-hidden">
+
       {COLORS.map((color) => {
         const isSelected = selectedColor === color;
 
@@ -26,9 +30,11 @@ export default function ColorPicker({ selectedColor, onColorChange }: ColorPicke
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              w-9 h-9 rounded-full flex-shrink-0
+              w-9 h-9 rounded-full
               transition-all duration-200
-              ${isSelected ? 'scale-110 ring-2 ring-black' : 'hover:scale-105'}
+              ${isSelected
+                ? 'ring-2 ring-black scale-105'
+                : 'ring-1 ring-gray-300 hover:scale-105'}
             `}
             style={{ backgroundColor: color }}
           />
