@@ -20,8 +20,7 @@ export default function ColorPicker({
   onColorChange,
 }: ColorPickerProps) {
   return (
-    <div className="flex justify-center gap-3 flex-nowrap overflow-hidden">
-
+    <div className="flex justify-center gap-3 flex-wrap">
       {COLORS.map((color) => {
         const isSelected = selectedColor === color;
 
@@ -30,12 +29,12 @@ export default function ColorPicker({
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              w-9 h-9 shrink-0 rounded-full
-              transition-all duration-200
-              ring-2 ring-white
-              ${isSelected ? 'ring-gray-900 scale-105' : 'ring-gray-200'}
-`           }
-
+              w-9 h-9 rounded-full
+              border transition-all duration-200
+              ${isSelected
+                ? 'border-gray-900 scale-110'
+                : 'border-gray-200 hover:scale-105'}
+            `}
             style={{ backgroundColor: color }}
           />
         );

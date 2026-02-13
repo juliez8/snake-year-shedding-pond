@@ -11,10 +11,10 @@ export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // Responsive detection
+  // Responsive breakpoint
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1100);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     handleResize();
@@ -22,7 +22,7 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 🔥 reusable fetch
+  // Fetch snakes
   const fetchSnakes = useCallback(async () => {
     const { data } = await supabase
       .from('snake_segments')
@@ -39,7 +39,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-12 px-6 overflow-x-hidden">
-
       <div className="max-w-7xl mx-auto space-y-10">
 
         {/* Header */}
@@ -53,35 +52,33 @@ export default function HomePage() {
             Watch it fade over 8 hours as you step into the new year.
           </p>
 
-          {isMobile && (
-            <div className="flex justify-center gap-4 mt-6">
+          <div className="flex justify-center gap-4 mt-6">
+            {isMobile && (
               <button
                 onClick={() => setShowModal(true)}
                 className="px-6 py-3 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700"
               >
                 Draw a Snake
               </button>
+            )}
 
-              <a
-                href="/gallery"
-                className="px-6 py-3 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700"
-              >
-                Visit Garden
-              </a>
-            </div>
-          )}
+            <a
+              href="/gallery"
+              className="px-6 py-3 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700"
+            >
+              Visit Garden
+            </a>
+          </div>
         </div>
 
-        {/* MAIN LAYOUT */}
+        {/* Layout */}
         <div className="flex justify-center">
-          <div className="flex gap-10 items-start w-full max-w-6xl">
+          <div className="flex gap-12 items-start w-full max-w-6xl">
 
-            {/* Island */}
             <div className="flex-1 min-w-[300px]">
               <Island snakes={snakes} />
             </div>
 
-            {/* Desktop Draw Panel */}
             {!isMobile && (
               <div className="w-[320px] shrink-0">
                 <DrawPanel onSuccess={fetchSnakes} />
@@ -95,12 +92,10 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* MOBILE MODAL */}
+      {/* Mobile Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-hidden">
-
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 relative">
-
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"

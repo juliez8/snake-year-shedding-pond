@@ -59,7 +59,6 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
       setClearTrigger((prev) => prev + 1);
 
       onSuccess?.();
-
     } catch {
       setError('Something went wrong.');
     }
@@ -81,7 +80,7 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
 
       <SnakeCanvas
         width={340}
-        height={230}
+        height={340}
         selectedColor={selectedColor}
         onDrawingChange={setDrawingData}
         clearTrigger={clearTrigger}
