@@ -11,7 +11,7 @@ interface SnakeCanvasProps {
   clearTrigger?: number;
 }
 
-const BRUSH_WIDTH = 4;
+const BRUSH_WIDTH = 8;
 
 export default function SnakeCanvas({
   width = 340,
