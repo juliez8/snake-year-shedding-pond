@@ -29,11 +29,11 @@ export default function ColorPicker({
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              relative w-10 h-10 rounded-full flex-shrink-0
-              transition-all duration-200
+              w-10 h-10 rounded-full flex-shrink-0
+              transition-all duration-150
               ${isSelected
-                ? 'ring-2 ring-offset-2 ring-gray-900'
-                : 'hover:ring-2 hover:ring-offset-1 hover:ring-gray-400'}
+                ? 'border-[3px] border-gray-900'
+                : 'border-2 border-gray-300 hover:border-gray-500'}
             `}
             style={{ backgroundColor: color }}
             aria-label={`Select color ${color}`}
