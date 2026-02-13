@@ -20,7 +20,7 @@ export default function ColorPicker({
   onColorChange,
 }: ColorPickerProps) {
   return (
-    <div className="flex justify-center gap-2 px-2">
+    <div className="flex justify-center gap-3 px-4">
       {COLORS.map((color) => {
         const isSelected = selectedColor === color;
 
@@ -29,11 +29,11 @@ export default function ColorPicker({
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              w-9 h-9 rounded-full flex-shrink-0
-              border-2 transition-all duration-200
+              relative w-10 h-10 rounded-full flex-shrink-0
+              transition-all duration-200
               ${isSelected
-                ? 'border-gray-900 scale-110 ring-2 ring-gray-300'
-                : 'border-gray-300 hover:scale-105 hover:border-gray-400'}
+                ? 'ring-2 ring-offset-2 ring-gray-900'
+                : 'hover:ring-2 hover:ring-offset-1 hover:ring-gray-400'}
             `}
             style={{ backgroundColor: color }}
             aria-label={`Select color ${color}`}
