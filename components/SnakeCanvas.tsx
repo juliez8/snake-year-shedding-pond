@@ -11,63 +11,53 @@ interface SnakeCanvasProps {
   clearTrigger?: number;
 }
 
-const BRUSH_WIDTH = 9;
+const BRUSH_WIDTH = 8;
 
 export default function SnakeCanvas({
-  width = 360,
-  height = 360,
+  width = 340,
+  height = 340,
   selectedColor,
   onDrawingChange,
   clearTrigger = 0,
 }: SnakeCanvasProps) {
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [currentStroke, setCurrentStroke] = useState<Point[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  // ---------------------------
-  // Retina scaling (correct)
-  // ---------------------------
+  // 🔥 High DPI fix (crisp canvas, no blur)
   useEffect(() => {
-  const canvas = canvasRef.current;
-  if (!canvas) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+    const ratio = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-  const ratio = window.devicePixelRatio || 1;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
 
-  canvas.width = width * ratio;
-  canvas.height = height * ratio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-}, [width, height]);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  }, [width, height]);
 
-
-  // ---------------------------
   // Clear
-  // ---------------------------
   useEffect(() => {
     if (clearTrigger > 0) {
       setStrokes([]);
       setCurrentStroke([]);
-
       const ctx = canvasRef.current?.getContext('2d');
-      if (ctx) ctx.clearRect(0, 0, width, height);
+      ctx?.clearRect(0, 0, width, height);
     }
   }, [clearTrigger, width, height]);
 
-  // ---------------------------
-  // Notify parent
-  // ---------------------------
   useEffect(() => {
     onDrawingChange({ strokes, width, height });
   }, [strokes, width, height, onDrawingChange]);
 
-  // ---------------------------
   // Redraw strokes
-  // ---------------------------
   useEffect(() => {
     const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
@@ -91,18 +81,13 @@ export default function SnakeCanvas({
 
       ctx.stroke();
     });
-
   }, [strokes, width, height]);
 
-  // ---------------------------
-  // Helpers
-  // ---------------------------
   const getPoint = (e: any): Point | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
-
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
@@ -154,10 +139,10 @@ export default function SnakeCanvas({
   };
 
   return (
-    <div className="border border-gray-200 rounded-3xl shadow-inner overflow-hidden bg-white mx-auto">
+    <div className="w-full max-w-[340px] mx-auto overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-inner">
       <canvas
         ref={canvasRef}
-        className="block cursor-crosshair touch-none"
+        className="block"
         onMouseDown={start}
         onMouseMove={move}
         onMouseUp={stop}
