@@ -20,7 +20,7 @@ export default function ColorPicker({
   onColorChange,
 }: ColorPickerProps) {
   return (
-    <div className="flex justify-center gap-3 px-4">
+    <div className="flex justify-center gap-2 px-2">
       {COLORS.map((color) => {
         const isSelected = selectedColor === color;
 
@@ -29,7 +29,7 @@ export default function ColorPicker({
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              w-10 h-10 rounded-full flex-shrink-0
+              w-8 h-8 rounded-full flex-shrink-0
               transition-all duration-150
               ${isSelected
                 ? 'border-[3px] border-gray-900'
