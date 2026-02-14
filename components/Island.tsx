@@ -9,9 +9,10 @@ import SnakeModal from './SnakeModal';
 interface IslandProps {
   snakes: Snake[];
   lastAddedSnakeId?: string | null;
+  onEntryAnimationComplete?: () => void;
 }
 
-export default function Island({ snakes, lastAddedSnakeId }: IslandProps) {
+export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationComplete }: IslandProps) {
   const [selectedSnake, setSelectedSnake] = useState<Snake | null>(null);
   const [opacities, setOpacities] = useState<Record<string, number>>({});
 
@@ -31,7 +32,7 @@ export default function Island({ snakes, lastAddedSnakeId }: IslandProps) {
 
   return (
     <>
-      <div className="relative w-full max-w-4xl mx-auto aspect-[4/3] bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl shadow-xl overflow-hidden">
+      <div className="relative w-full max-w-4xl mx-auto aspect-[4/3] bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 ease-out">
 
         {snakes.map((snake) => {
           const left = `${snake.position_x * 100}%`;
@@ -55,6 +56,11 @@ export default function Island({ snakes, lastAddedSnakeId }: IslandProps) {
                     ? 'animate-snakeEntry'
                     : 'hover:animate-wiggle'
                 }
+                onAnimationEnd={() => {
+                  if (lastAddedSnakeId === snake.id) {
+                    onEntryAnimationComplete?.();
+                  }
+                }}
               >
                 <SnakeDisplay
                   drawing={snake.drawing_data}

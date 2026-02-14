@@ -38,13 +38,6 @@ export default function HomePage() {
     fetchSnakes();
   }, [fetchSnakes]);
 
-  // Clear entry animation state after it plays
-  useEffect(() => {
-    if (!lastAddedSnakeId) return;
-    const t = setTimeout(() => setLastAddedSnakeId(null), 1500);
-    return () => clearTimeout(t);
-  }, [lastAddedSnakeId]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-8 px-4 sm:py-12 sm:px-6">
       <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
@@ -80,30 +73,26 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="w-full">
-          {isMobile ? (
-            // Mobile: Full width island
-            <div className="w-full">
-              <Island snakes={snakes} lastAddedSnakeId={lastAddedSnakeId} />
-            </div>
-          ) : (
-            // Desktop: Island + Draw Panel side by side, same height
-            <div className="flex justify-center gap-6 lg:gap-12 items-stretch">
-              {/* Island - flexible width */}
-              <div className="flex-1 min-w-0 max-w-4xl">
-                <Island snakes={snakes} lastAddedSnakeId={lastAddedSnakeId} />
-              </div>
+        {/* Main Content Area - island flexes with viewport */}
+        <div className="w-full min-h-0 flex flex-col lg:flex-row lg:items-stretch gap-6 lg:gap-12 transition-all duration-300">
+          {/* Island - flexible, fills available space, responds to resize */}
+          <div className="flex-1 min-w-0 min-h-[280px] lg:min-h-[320px] flex items-center justify-center">
+            <Island
+              snakes={snakes}
+              lastAddedSnakeId={lastAddedSnakeId}
+              onEntryAnimationComplete={() => setLastAddedSnakeId(null)}
+            />
+          </div>
 
-              {/* Draw Panel - fixed width, stretches to match Island height */}
-              <div className="w-[340px] flex-shrink-0 flex">
-                <DrawPanel
-                  onSuccess={(result) => {
-                    if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
-                    fetchSnakes();
-                  }}
-                />
-              </div>
+          {/* Draw Panel - fixed width on desktop, full width on mobile when not in modal */}
+          {!isMobile && (
+            <div className="w-[340px] flex-shrink-0 flex">
+              <DrawPanel
+                onSuccess={(result) => {
+                  if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
+                  fetchSnakes();
+                }}
+              />
             </div>
           )}
         </div>
