@@ -8,9 +8,10 @@ import SnakeModal from './SnakeModal';
 
 interface IslandProps {
   snakes: Snake[];
+  lastAddedSnakeId?: string | null;
 }
 
-export default function Island({ snakes }: IslandProps) {
+export default function Island({ snakes, lastAddedSnakeId }: IslandProps) {
   const [selectedSnake, setSelectedSnake] = useState<Snake | null>(null);
   const [opacities, setOpacities] = useState<Record<string, number>>({});
 
@@ -48,7 +49,13 @@ export default function Island({ snakes }: IslandProps) {
               }}
               onClick={() => setSelectedSnake(snake)}
             >
-              <div className="hover:animate-wiggle">
+              <div
+                className={
+                  lastAddedSnakeId === snake.id
+                    ? 'animate-snakeEntry'
+                    : 'hover:animate-wiggle'
+                }
+              >
                 <SnakeDisplay
                   drawing={snake.drawing_data}
                   opacity={opacity}

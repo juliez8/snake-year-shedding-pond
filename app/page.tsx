@@ -10,6 +10,7 @@ export default function HomePage() {
   const [snakes, setSnakes] = useState<Snake[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [lastAddedSnakeId, setLastAddedSnakeId] = useState<string | null>(null);
 
   // Responsive breakpoint
   useEffect(() => {
@@ -36,6 +37,13 @@ export default function HomePage() {
   useEffect(() => {
     fetchSnakes();
   }, [fetchSnakes]);
+
+  // Clear entry animation state after it plays
+  useEffect(() => {
+    if (!lastAddedSnakeId) return;
+    const t = setTimeout(() => setLastAddedSnakeId(null), 1500);
+    return () => clearTimeout(t);
+  }, [lastAddedSnakeId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-8 px-4 sm:py-12 sm:px-6">
@@ -77,19 +85,24 @@ export default function HomePage() {
           {isMobile ? (
             // Mobile: Full width island
             <div className="w-full">
-              <Island snakes={snakes} />
+              <Island snakes={snakes} lastAddedSnakeId={lastAddedSnakeId} />
             </div>
           ) : (
             // Desktop: Island + Draw Panel side by side, same height
             <div className="flex justify-center gap-6 lg:gap-12 items-stretch">
               {/* Island - flexible width */}
               <div className="flex-1 min-w-0 max-w-4xl">
-                <Island snakes={snakes} />
+                <Island snakes={snakes} lastAddedSnakeId={lastAddedSnakeId} />
               </div>
 
               {/* Draw Panel - fixed width, stretches to match Island height */}
               <div className="w-[340px] flex-shrink-0 flex">
-                <DrawPanel onSuccess={fetchSnakes} />
+                <DrawPanel
+                  onSuccess={(result) => {
+                    if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
+                    fetchSnakes();
+                  }}
+                />
               </div>
             </div>
           )}
@@ -120,7 +133,8 @@ export default function HomePage() {
             </button>
 
             <DrawPanel
-              onSuccess={() => {
+              onSuccess={(result) => {
+                if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
                 fetchSnakes();
                 setShowModal(false);
               }}

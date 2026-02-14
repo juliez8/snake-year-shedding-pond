@@ -6,7 +6,7 @@ import ColorPicker from '@/components/ColorPicker';
 import { DrawingData } from '@/types/snake';
 
 interface DrawPanelProps {
-  onSuccess?: () => void;
+  onSuccess?: (result: { snakeId: string; addedToGallery: boolean }) => void;
 }
 
 export default function DrawPanel({ onSuccess }: DrawPanelProps) {
@@ -54,11 +54,12 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
         return;
       }
 
+      const data = await res.json();
       setMessage('');
       setDrawingData(null);
       setClearTrigger((prev) => prev + 1);
 
-      onSuccess?.();
+      onSuccess?.({ snakeId: data.snake.id, addedToGallery: data.addedToGallery });
     } catch {
       setError('Something went wrong.');
     }
