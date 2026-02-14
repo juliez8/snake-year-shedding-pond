@@ -9,9 +9,11 @@ interface DrawPanelProps {
   onSuccess?: (result: { snakeId: string; addedToGallery: boolean }) => void;
   /** Compact mode for modal - smaller canvas, tighter layout, no scroll */
   compact?: boolean;
+  /** Embedded in modal - no inner border/shadow, outer container provides the glow */
+  embedded?: boolean;
 }
 
-export default function DrawPanel({ onSuccess, compact = false }: DrawPanelProps) {
+export default function DrawPanel({ onSuccess, compact = false, embedded = false }: DrawPanelProps) {
   const [selectedColor, setSelectedColor] = useState('#9B1C31');
   const [drawingData, setDrawingData] = useState<DrawingData | null>(null);
   const [message, setMessage] = useState('');
@@ -71,8 +73,12 @@ export default function DrawPanel({ onSuccess, compact = false }: DrawPanelProps
 
   const canvasSize = compact ? 200 : 300;
 
+  const outerStyles = embedded
+    ? 'bg-transparent w-full max-w-[340px] flex flex-col'
+    : 'bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] w-full max-w-[340px] flex flex-col border border-amber-100/80';
+
   return (
-    <div className={`bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] w-full max-w-[340px] flex flex-col border border-amber-100/80 ${compact ? 'p-3 space-y-2' : 'p-5 space-y-3 h-full min-h-0 overflow-y-auto'}`}>
+    <div className={`${outerStyles} ${compact ? 'p-4 pt-14 space-y-2' : 'p-5 space-y-3 h-full min-h-0 overflow-y-auto'}`}>
 
       <h2 className={`font-medium text-amber-900/90 text-center tracking-wide ${compact ? 'text-base' : 'text-lg'}`}>
         Draw Your Snake
@@ -114,7 +120,8 @@ export default function DrawPanel({ onSuccess, compact = false }: DrawPanelProps
         maxLength={140}
         rows={compact ? 2 : 3}
         placeholder="What do you wish to shed?"
-        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white/60 text-sm text-amber-900/90 placeholder-amber-400/70 transition-colors"
+        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white/60 text-amber-900/90 placeholder-amber-400/70 transition-colors"
+        style={{ fontSize: '16px' }}
       />
 
       <div className="text-right text-xs text-amber-600/70">

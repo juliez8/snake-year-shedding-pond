@@ -110,12 +110,12 @@ export default function HomePage() {
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-amber-50/95 w-full max-w-sm rounded-2xl shadow-2xl p-4 relative max-h-[90vh] flex flex-col min-h-0 overflow-hidden border border-amber-100/80"
+            className="bg-amber-50/95 w-full max-w-sm rounded-2xl shadow-[0_4px_24px_rgba(251,191,36,0.2),0_2px_8px_rgba(0,0,0,0.06)] p-0 relative max-h-[90vh] flex flex-col min-h-0 overflow-hidden border-2 border-amber-200/90"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-3 right-3 z-10 text-gray-500 hover:text-black text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+              className="absolute top-3 right-3 z-10 text-amber-800 font-bold text-2xl leading-none w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 hover:shadow-[0_0_16px_rgba(251,191,36,0.6)] hover:bg-amber-200/60"
               aria-label="Close"
             >
               ×
@@ -123,6 +123,7 @@ export default function HomePage() {
 
             <DrawPanel
               compact
+              embedded
               onSuccess={(result) => {
                 if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
                 fetchSnakes();
