@@ -163,11 +163,11 @@ export default function SnakeCanvas({
   };
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-white shadow-inner touch-none">
+    <div className="rounded-2xl border-2 border-gray-200 bg-white shadow-inner touch-none shrink-0" style={{ width: width, minWidth: width, height: height, minHeight: height }}>
       <canvas
         ref={canvasRef}
-        className="block w-full h-auto cursor-crosshair touch-none"
-        style={{ touchAction: 'none' }}
+        className="block cursor-crosshair touch-none"
+        style={{ width: width, height: height, touchAction: 'none', display: 'block', boxSizing: 'border-box' }}
         onPointerDown={start}
         onPointerMove={move}
         onPointerUp={stop}

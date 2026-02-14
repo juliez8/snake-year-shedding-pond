@@ -86,8 +86,8 @@ export default function DrawPanel({ onSuccess, compact = false }: DrawPanelProps
         />
       </div>
 
-      {/* Canvas */}
-      <div className={`w-full flex-shrink-0 rounded-2xl bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] ${compact ? 'p-1.5' : 'p-2'}`}>
+      {/* Canvas - flex center to avoid clipping */}
+      <div className={`w-full flex-shrink-0 rounded-2xl bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] flex justify-center ${compact ? 'p-1.5' : 'p-2'}`}>
         <SnakeCanvas
           width={canvasSize}
           height={canvasSize}
