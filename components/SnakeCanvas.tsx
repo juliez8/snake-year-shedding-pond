@@ -102,38 +102,34 @@ export default function SnakeCanvas({
     });
   }, [strokes, width, height]);
 
-  // Get coordinates in canvas space (NOT display space)
-  const getPoint = (e: React.MouseEvent | React.TouchEvent): Point | null => {
+  // Get coordinates in canvas space (works for pointer, mouse, touch)
+  const getPoint = (clientX: number, clientY: number): Point | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
 
-    // Get client coordinates
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-
-    // Convert to canvas coordinates (accounting for CSS scaling)
     const x = (clientX - rect.left) * (width / rect.width);
     const y = (clientY - rect.top) * (height / rect.height);
 
     return { x, y };
   };
 
-  const start = (e: React.MouseEvent | React.TouchEvent) => {
+  const start = (e: React.PointerEvent) => {
     e.preventDefault();
-    const point = getPoint(e);
+    const point = getPoint(e.clientX, e.clientY);
     if (!point) return;
 
+    (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
     setIsDrawing(true);
     setCurrentStroke([point]);
   };
 
-  const move = (e: React.MouseEvent | React.TouchEvent) => {
+  const move = (e: React.PointerEvent) => {
     e.preventDefault();
     if (!isDrawing) return;
 
-    const point = getPoint(e);
+    const point = getPoint(e.clientX, e.clientY);
     if (!point) return;
 
     const canvas = canvasRef.current;
@@ -157,7 +153,8 @@ export default function SnakeCanvas({
     setCurrentStroke([...currentStroke, point]);
   };
 
-  const stop = () => {
+  const stop = (e: React.PointerEvent) => {
+    e.preventDefault();
     if (isDrawing && currentStroke.length > 1) {
       setStrokes([...strokes, { color: selectedColor, points: currentStroke }]);
     }
@@ -166,17 +163,15 @@ export default function SnakeCanvas({
   };
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-white shadow-inner">
+    <div className="w-full rounded-2xl overflow-hidden border-2 border-gray-200 bg-white shadow-inner touch-none">
       <canvas
         ref={canvasRef}
         className="block w-full h-auto cursor-crosshair touch-none"
-        onMouseDown={start}
-        onMouseMove={move}
-        onMouseUp={stop}
-        onMouseLeave={stop}
-        onTouchStart={start}
-        onTouchMove={move}
-        onTouchEnd={stop}
+        style={{ touchAction: 'none' }}
+        onPointerDown={start}
+        onPointerMove={move}
+        onPointerUp={stop}
+        onPointerCancel={stop}
       />
     </div>
   );
