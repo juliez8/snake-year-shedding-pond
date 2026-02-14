@@ -103,25 +103,26 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Mobile Modal */}
+      {/* Mobile Modal - no scroll, fits viewport */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-start justify-center z-50 p-4 pt-8 pb-8 overflow-y-auto"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 relative my-8"
+            className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-4 relative max-h-[90vh] flex flex-col min-h-0 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl leading-none w-8 h-8 flex items-center justify-center"
+              className="absolute top-3 right-3 z-10 text-gray-500 hover:text-black text-xl leading-none w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
               aria-label="Close"
             >
               ×
             </button>
 
             <DrawPanel
+              compact
               onSuccess={(result) => {
                 if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);
                 fetchSnakes();

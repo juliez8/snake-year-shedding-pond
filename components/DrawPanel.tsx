@@ -7,9 +7,11 @@ import { DrawingData } from '@/types/snake';
 
 interface DrawPanelProps {
   onSuccess?: (result: { snakeId: string; addedToGallery: boolean }) => void;
+  /** Compact mode for modal - smaller canvas, tighter layout, no scroll */
+  compact?: boolean;
 }
 
-export default function DrawPanel({ onSuccess }: DrawPanelProps) {
+export default function DrawPanel({ onSuccess, compact = false }: DrawPanelProps) {
   const [selectedColor, setSelectedColor] = useState('#9B1C31');
   const [drawingData, setDrawingData] = useState<DrawingData | null>(null);
   const [message, setMessage] = useState('');
@@ -67,26 +69,28 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
     setIsSubmitting(false);
   };
 
-  return (
-    <div className="bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] p-5 space-y-3 w-full max-w-[340px] h-full min-h-0 flex flex-col overflow-y-auto border border-amber-100/80">
+  const canvasSize = compact ? 200 : 300;
 
-      <h2 className="text-lg font-medium text-amber-900/90 text-center tracking-wide">
+  return (
+    <div className={`bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] w-full max-w-[340px] flex flex-col border border-amber-100/80 ${compact ? 'p-3 space-y-2' : 'p-5 space-y-3 h-full min-h-0 overflow-y-auto'}`}>
+
+      <h2 className={`font-medium text-amber-900/90 text-center tracking-wide ${compact ? 'text-base' : 'text-lg'}`}>
         Draw Your Snake
       </h2>
 
-      {/* Color Picker - contained within panel */}
-      <div className="w-full overflow-visible">
+      {/* Color Picker */}
+      <div className="w-full overflow-visible flex-shrink-0">
         <ColorPicker
           selectedColor={selectedColor}
           onColorChange={setSelectedColor}
         />
       </div>
 
-      {/* Canvas - cozy framed card container */}
-      <div className="w-full flex-shrink-0 rounded-2xl p-2 bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)]">
+      {/* Canvas */}
+      <div className={`w-full flex-shrink-0 rounded-2xl bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] ${compact ? 'p-1.5' : 'p-2'}`}>
         <SnakeCanvas
-          width={300}
-          height={300}
+          width={canvasSize}
+          height={canvasSize}
           selectedColor={selectedColor}
           onDrawingChange={setDrawingData}
           clearTrigger={clearTrigger}
@@ -108,7 +112,7 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={140}
-        rows={3}
+        rows={compact ? 2 : 3}
         placeholder="What do you wish to shed?"
         className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white/60 text-sm text-amber-900/90 placeholder-amber-400/70 transition-colors"
       />
@@ -124,8 +128,8 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
         </div>
       )}
 
-      {/* Spacer to fill remaining height and align with Island */}
-      <div className="flex-1 min-h-2" />
+      {/* Spacer - only when not compact (desktop side panel) */}
+      {!compact && <div className="flex-1 min-h-2" />}
 
       {/* Submit button */}
       <button
