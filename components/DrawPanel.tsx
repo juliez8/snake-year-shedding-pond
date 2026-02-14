@@ -74,7 +74,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
   const canvasSize = compact ? 200 : 300;
 
   const outerStyles = embedded
-    ? 'bg-transparent w-full max-w-[340px] flex flex-col'
+    ? 'bg-transparent w-full max-w-[340px] flex flex-col items-center'
     : 'bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] w-full max-w-[340px] flex flex-col border border-amber-100/80';
 
   return (
@@ -93,13 +93,14 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       </div>
 
       {/* Canvas - flex center to avoid clipping */}
-      <div className={`w-full flex-shrink-0 rounded-2xl bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] flex justify-center ${compact ? 'p-1.5' : 'p-2'}`}>
+      <div className={`w-full flex-shrink-0 rounded-2xl border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.5)] flex justify-center ${compact ? 'p-1.5' : 'p-2'} ${embedded ? 'bg-amber-50/90' : 'bg-white/70'}`}>
         <SnakeCanvas
           width={canvasSize}
           height={canvasSize}
           selectedColor={selectedColor}
           onDrawingChange={setDrawingData}
           clearTrigger={clearTrigger}
+          wrapperClassName={embedded ? 'bg-amber-100/80 border-amber-200' : undefined}
         />
       </div>
 
@@ -120,7 +121,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         maxLength={140}
         rows={compact ? 2 : 3}
         placeholder="What do you wish to shed?"
-        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white/60 text-amber-900/90 placeholder-amber-400/70 transition-colors"
+        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white text-amber-900/90 placeholder-amber-400/70 transition-colors"
         style={{ fontSize: '16px' }}
       />
 

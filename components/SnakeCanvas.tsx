@@ -9,6 +9,7 @@ interface SnakeCanvasProps {
   selectedColor: string;
   onDrawingChange: (drawing: DrawingData) => void;
   clearTrigger?: number;
+  wrapperClassName?: string;
 }
 
 const BRUSH_WIDTH = 10;
@@ -19,6 +20,7 @@ export default function SnakeCanvas({
   selectedColor,
   onDrawingChange,
   clearTrigger = 0,
+  wrapperClassName,
 }: SnakeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
@@ -163,7 +165,7 @@ export default function SnakeCanvas({
   };
 
   return (
-    <div className="rounded-2xl border-2 border-gray-200 bg-white shadow-inner touch-none shrink-0" style={{ width: width, minWidth: width, height: height, minHeight: height }}>
+    <div className={`rounded-2xl border-2 shadow-inner touch-none shrink-0 ${wrapperClassName ?? 'border-gray-200 bg-white'}`} style={{ width: width, minWidth: width, height: height, minHeight: height }}>
       <canvas
         ref={canvasRef}
         className="block cursor-crosshair touch-none"
