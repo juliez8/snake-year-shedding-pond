@@ -67,9 +67,9 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-5 space-y-4 w-full max-w-[340px]">
+    <div className="bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] p-6 space-y-4 w-full max-w-[340px] border border-amber-100/80">
 
-      <h2 className="text-lg font-semibold text-gray-900 text-center">
+      <h2 className="text-lg font-medium text-amber-900/90 text-center tracking-wide">
         Draw Your Snake
       </h2>
 
@@ -81,8 +81,8 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
         />
       </div>
 
-      {/* Canvas - properly sized */}
-      <div className="w-full">
+      {/* Canvas - cozy framed card container */}
+      <div className="w-full rounded-2xl p-3 bg-white/70 border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.8)]">
         <SnakeCanvas
           width={300}
           height={300}
@@ -96,7 +96,7 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
       <div className="flex justify-end">
         <button
           onClick={handleClear}
-          className="text-xs text-gray-500 hover:text-gray-800 underline"
+          className="text-xs text-amber-700/70 hover:text-amber-800 underline decoration-amber-200 hover:decoration-amber-300 transition-colors"
         >
           Clear
         </button>
@@ -109,16 +109,16 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
         maxLength={140}
         rows={3}
         placeholder="What do you wish to shed?"
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm"
+        className="w-full px-4 py-3 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white/60 text-sm text-amber-900/90 placeholder-amber-400/70 transition-colors"
       />
 
-      <div className="text-right text-xs text-gray-500">
+      <div className="text-right text-xs text-amber-600/70">
         {message.length}/140
       </div>
 
       {/* Error message */}
       {error && (
-        <div className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">
+        <div className="text-rose-700 text-sm bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]">
           {error}
         </div>
       )}
@@ -127,7 +127,7 @@ export default function DrawPanel({ onSuccess }: DrawPanelProps) {
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="w-full py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+        className="w-full py-3 bg-amber-400 text-amber-950 rounded-full hover:bg-amber-500 disabled:bg-amber-200 disabled:text-amber-600/70 disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium shadow-[0_2px_8px_rgba(251,191,36,0.25)] hover:shadow-[0_4px_12px_rgba(251,191,36,0.3)] active:scale-[0.99]"
       >
         {isSubmitting ? 'Releasing...' : 'Release Snake'}
       </button>
