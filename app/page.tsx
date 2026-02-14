@@ -80,15 +80,15 @@ export default function HomePage() {
               <Island snakes={snakes} />
             </div>
           ) : (
-            // Desktop: Island + Draw Panel side by side
-            <div className="flex justify-center gap-6 lg:gap-12 items-start">
+            // Desktop: Island + Draw Panel side by side, same height
+            <div className="flex justify-center gap-6 lg:gap-12 items-stretch">
               {/* Island - flexible width */}
               <div className="flex-1 min-w-0 max-w-4xl">
                 <Island snakes={snakes} />
               </div>
 
-              {/* Draw Panel - fixed width */}
-              <div className="w-[340px] flex-shrink-0">
+              {/* Draw Panel - fixed width, stretches to match Island height */}
+              <div className="w-[340px] flex-shrink-0 flex">
                 <DrawPanel onSuccess={fetchSnakes} />
               </div>
             </div>

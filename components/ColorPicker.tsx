@@ -20,7 +20,7 @@ export default function ColorPicker({
   onColorChange,
 }: ColorPickerProps) {
   return (
-    <div className="flex justify-center gap-3 px-2 py-1">
+    <div className="flex justify-center gap-2 py-1">
       {COLORS.map((color) => {
         const isSelected = selectedColor === color;
 
@@ -29,12 +29,12 @@ export default function ColorPicker({
             key={color}
             onClick={() => onColorChange(color)}
             className={`
-              w-9 h-9 rounded-full flex-shrink-0
+              w-8 h-8 rounded-full flex-shrink-0
               transition-all duration-200 ease-out
               shadow-[inset_0_2px_4px_rgba(0,0,0,0.08)]
-              hover:scale-110 active:scale-95
+              hover:scale-105 active:scale-95
               ${isSelected
-                ? 'ring-2 ring-amber-300/80 ring-offset-2 ring-offset-amber-50 shadow-[0_2px_8px_rgba(251,191,36,0.35)]'
+                ? 'ring-2 ring-amber-300/80 ring-offset-1 ring-offset-amber-50 shadow-[0_2px_6px_rgba(251,191,36,0.3)]'
                 : 'ring-1 ring-amber-200/60 hover:ring-amber-300/70'}
             `}
             style={{ backgroundColor: color }}
