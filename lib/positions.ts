@@ -1,4 +1,4 @@
-gitexport type Position = {
+export type Position = {
   position_x: number;
   position_y: number;
 };
