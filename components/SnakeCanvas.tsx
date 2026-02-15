@@ -26,6 +26,7 @@ export default function SnakeCanvas({
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [currentStroke, setCurrentStroke] = useState<Point[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const currentStrokeRef = useRef<Point[]>([]);
 
   // Setup canvas with proper DPI scaling for crisp rendering
   useEffect(() => {
@@ -128,8 +129,10 @@ export default function SnakeCanvas({
     if (!point) return;
 
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
+    const pts = [point];
+    currentStrokeRef.current = pts;
     setIsDrawing(true);
-    setCurrentStroke([point]);
+    setCurrentStroke(pts);
   };
 
   const move = (e: React.PointerEvent) => {
@@ -157,18 +160,20 @@ export default function SnakeCanvas({
     ctx.lineTo(point.x, point.y);
     ctx.stroke();
 
-    setCurrentStroke([...currentStroke, point]);
+    const updated = [...currentStrokeRef.current, point];
+    currentStrokeRef.current = updated;
+    setCurrentStroke(updated);
   };
 
   const stop = (e: React.PointerEvent) => {
     e.preventDefault();
-    if (isDrawing && currentStroke.length >= 1) {
+    const pts = currentStrokeRef.current;
+    if (pts.length >= 1) {
       const points =
-        currentStroke.length >= 2
-          ? currentStroke
-          : [currentStroke[0], { ...currentStroke[0] }];
-      setStrokes([...strokes, { color: selectedColor, points }]);
+        pts.length >= 2 ? [...pts] : [pts[0], { ...pts[0] }];
+      setStrokes((prev) => [...prev, { color: selectedColor, points }]);
     }
+    currentStrokeRef.current = [];
     setIsDrawing(false);
     setCurrentStroke([]);
   };
