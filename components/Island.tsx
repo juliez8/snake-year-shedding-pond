@@ -35,8 +35,9 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
       <div className="relative w-full max-w-4xl mx-auto aspect-[4/3] bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 ease-out">
 
         {snakes.map((snake) => {
-          const left = `${snake.position_x * 100}%`;
-          const top = `${snake.position_y * 100}%`;
+          const inset = 0.1;
+          const left = `${inset * 100 + snake.position_x * (1 - 2 * inset) * 100}%`;
+          const top = `${inset * 100 + snake.position_y * (1 - 2 * inset) * 100}%`;
           const opacity = opacities[snake.id] ?? 1;
 
           return (

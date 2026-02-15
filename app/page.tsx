@@ -43,7 +43,7 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
         {/* Header - title + subtitle, Visit Gallery always visible (desktop: top-right, mobile: below subtitle) */}
-        <div className="flex-shrink-0 pb-2 sm:pb-4">
+        <div className="flex-shrink-0 pb-1 sm:pb-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
             <div className="text-center sm:text-left flex-1">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -54,7 +54,7 @@ export default function HomePage() {
               </p>
               {/* On mobile: Draw a Snake button in header */}
               {isMobile ? (
-                <div className="flex justify-center gap-4 mt-3">
+                <div className="flex justify-center gap-4 mt-2">
                   <button
                     onClick={() => setShowModal(true)}
                     className="px-6 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-base shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
@@ -82,9 +82,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Main content - takes remaining space */}
-        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-2 sm:gap-4 lg:gap-8 transition-all duration-300">
-          <div className="flex-1 min-w-0 min-h-[200px] sm:min-h-[240px] lg:min-h-[280px] flex items-center justify-center">
+        {/* Main content - takes remaining space; on mobile island gets more room, less gap */}
+        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-1 sm:gap-4 lg:gap-8 transition-all duration-300">
+          <div className="flex-1 min-w-0 min-h-[min(55vh,420px)] sm:min-h-[280px] flex items-center justify-center">
             <Island
               snakes={snakes}
               lastAddedSnakeId={lastAddedSnakeId}
@@ -104,12 +104,6 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Footer - snake count (Visit Gallery is in header on desktop) */}
-        <div className="flex-shrink-0 flex items-center gap-4 pt-2 sm:pt-4">
-          <span className="text-gray-700 text-base sm:text-lg font-bold">
-            {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
-          </span>
-        </div>
       </div>
 
       {/* Mobile Modal - no scroll, fits viewport */}
