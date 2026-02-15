@@ -32,6 +32,9 @@ export default async function GalleryPage() {
             <p className="text-amber-800/80 font-semibold text-sm sm:text-base mt-0.5">
               {snakes.length.toLocaleString()} TOTAL SNAKES
             </p>
+            <p className="text-amber-700/60 text-sm mt-1.5 max-w-md">
+              Tap any snake to read what was released—and what they are ready to become.
+            </p>
           </div>
           <a
             href="/"

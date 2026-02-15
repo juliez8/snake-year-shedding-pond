@@ -6,6 +6,8 @@ import { calculateOpacityIsland } from '@/lib/fade';
 import SnakeDisplay from './SnakeDisplay';
 import SnakeModal from './SnakeModal';
 
+const SHED_DURATION_MS = 10_000;
+
 interface IslandProps {
   snakes: Snake[];
   lastAddedSnakeId?: string | null;
@@ -29,6 +31,24 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     const interval = setInterval(updateOpacities, 200);
     return () => clearInterval(interval);
   }, [snakes]);
+
+  // When the user's newly added snake finishes shedding (10s), auto-open the modal
+  useEffect(() => {
+    if (!lastAddedSnakeId) return;
+    const snake = snakes.find((s) => s.id === lastAddedSnakeId);
+    if (!snake) return;
+
+    const createdAt = new Date(snake.created_at).getTime();
+    const elapsed = Date.now() - createdAt;
+    const delay = Math.max(0, SHED_DURATION_MS - elapsed);
+
+    const timer = setTimeout(() => {
+      setSelectedSnake(snake);
+      onEntryAnimationComplete?.();
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [lastAddedSnakeId, snakes, onEntryAnimationComplete]);
 
   return (
     <>
