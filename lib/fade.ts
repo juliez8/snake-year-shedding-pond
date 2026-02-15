@@ -1,26 +1,25 @@
+/** Minimum opacity for island snakes (faded but still visible) */
+const ISLAND_MIN_OPACITY = 0.25;
+
 /**
- * Calculate opacity based on time elapsed since creation
- * Snakes fade over 8 hours but never fully disappear (min 0.1)
+ * Calculate opacity for island snakes - fades over 10 seconds for instant gratification
  */
-export function calculateOpacity(createdAt: string): number {
+export function calculateOpacityIsland(createdAt: string): number {
   const createdTime = new Date(createdAt).getTime();
   const now = Date.now();
-  const hoursPassed = (now - createdTime) / 3600000; // Convert ms to hours
-  
-  const fadeHours = 8;
-  const opacity = Math.max(1 - (hoursPassed / fadeHours), 0.1);
-  
-  return opacity;
+  const secondsPassed = (now - createdTime) / 1000;
+
+  const fadeSeconds = 10;
+  if (secondsPassed >= fadeSeconds) return ISLAND_MIN_OPACITY;
+
+  const progress = secondsPassed / fadeSeconds;
+  return 1 - progress * (1 - ISLAND_MIN_OPACITY);
 }
 
 /**
- * Get hours remaining until fully faded
+ * Calculate opacity based on time elapsed (legacy - used for gallery: full opacity)
+ * Gallery snakes are always shown at full opacity (pre-faded, preserved)
  */
-export function getHoursRemaining(createdAt: string): number {
-  const createdTime = new Date(createdAt).getTime();
-  const now = Date.now();
-  const hoursPassed = (now - createdTime) / 3600000;
-  
-  const fadeHours = 8;
-  return Math.max(fadeHours - hoursPassed, 0);
+export function calculateOpacity(_createdAt: string): number {
+  return 1;
 }

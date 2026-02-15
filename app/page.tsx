@@ -48,7 +48,7 @@ export default function HomePage() {
             🐍 Shedding Island
           </h1>
           <p className="text-base sm:text-lg font-semibold text-gray-700 mt-1">
-            Draw a snake, shed what you wish—it fades over 8 hours
+            Draw a snake and release what no longer serves you. Watch it fade as you step into the Year of the Fire Horse
           </p>
           {/* On mobile: both buttons in header so no scroll needed */}
           {isMobile ? (

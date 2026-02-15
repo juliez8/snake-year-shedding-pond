@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Snake } from '@/types/snake';
-import { calculateOpacity } from '@/lib/fade';
+import { calculateOpacityIsland } from '@/lib/fade';
 import SnakeDisplay from './SnakeDisplay';
 import SnakeModal from './SnakeModal';
 
@@ -20,13 +20,13 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     const updateOpacities = () => {
       const newOpacities: Record<string, number> = {};
       snakes.forEach((snake) => {
-        newOpacities[snake.id] = calculateOpacity(snake.created_at);
+        newOpacities[snake.id] = calculateOpacityIsland(snake.created_at);
       });
       setOpacities(newOpacities);
     };
 
     updateOpacities();
-    const interval = setInterval(updateOpacities, 60000);
+    const interval = setInterval(updateOpacities, 200);
     return () => clearInterval(interval);
   }, [snakes]);
 

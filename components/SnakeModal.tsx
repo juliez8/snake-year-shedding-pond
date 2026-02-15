@@ -46,8 +46,6 @@ export default function SnakeModal({ isOpen, message, onClose }: SnakeModalProps
             "{message}"
           </p>
           <p className="text-lg text-gray-600 leading-relaxed pt-4">
-            The Snake carries it forward.
-            <br />
             You are ready for the Fire Horse Year.
           </p>
         </div>
