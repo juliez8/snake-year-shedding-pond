@@ -32,22 +32,22 @@ export default function GalleryClient({ snakes }: GalleryClientProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-3 sm:gap-4">
         {snakes.map((snake) => {
           const opacity = opacities[snake.id] ?? 1;
 
           return (
             <div
               key={snake.id}
-              className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-amber-50/80 rounded-xl p-2 sm:p-3 border border-amber-100 hover:shadow-[0_2px_12px_rgba(251,191,36,0.2)] transition-all cursor-pointer flex items-center justify-center aspect-square"
               onClick={() => setSelectedSnake(snake)}
             >
               <SnakeDisplay
                 drawing={snake.drawing_data}
                 opacity={opacity}
-                width={200}
-                height={120}
-                className="w-full h-auto"
+                width={80}
+                height={48}
+                className="w-full h-auto max-h-full object-contain"
               />
             </div>
           );

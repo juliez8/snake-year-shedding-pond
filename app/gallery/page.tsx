@@ -23,29 +23,29 @@ export default async function GalleryPage() {
   const snakes = await getGallerySnakes();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-stone-100 py-8 px-4">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-gray-800">The Gallery</h1>
-          <p className="text-gray-600">
-            Snakes that have completed their journey on the island
-          </p>
-        </div>
-
-        <div className="text-center">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-4 px-4 sm:px-6" style={{ zoom: 0.9 }}>
+      <div className="max-w-7xl mx-auto">
+        {/* Header: title + count left, back button right - Anna's Garden style */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">SNAKE GALLERY</h1>
+            <p className="text-amber-800/80 font-semibold text-sm sm:text-base mt-0.5">
+              {snakes.length.toLocaleString()} TOTAL SNAKES
+            </p>
+          </div>
           <a
             href="/"
-            className="inline-block px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+            className="shrink-0 px-4 py-2 border-2 border-amber-800 text-amber-900 rounded-lg font-semibold hover:bg-amber-100 transition-colors text-sm sm:text-base"
           >
-            ← Back to Island
+            ← BACK TO ISLAND
           </a>
         </div>
 
         <GalleryClient snakes={snakes} />
 
         {snakes.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-gray-400 text-lg">
+          <div className="text-center py-12">
+            <p className="text-amber-700/70 font-medium">
               The gallery is empty. Visit the island to see active snakes.
             </p>
           </div>

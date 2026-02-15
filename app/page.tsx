@@ -39,7 +39,7 @@ export default function HomePage() {
   }, [fetchSnakes]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-4 sm:px-6 py-4 sm:py-6">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-4 sm:px-6 py-4 sm:py-6" style={{ zoom: 0.9 }}>
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
         {/* Compact header - title + one-line description + buttons */}
