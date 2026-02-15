@@ -3,12 +3,24 @@ import { getSupabaseClient } from '@/lib/supabase';
 import { validateSnakeGeometry } from '@/lib/validation';
 import { SnakeSubmission } from '@/types/snake';
 import { generateRandomPosition } from '@/lib/positions';
+import { isRateLimited } from '@/lib/rateLimit';
 
 const MIGRATE_BATCH_SIZE = 3;
 const MAX_MIGRATE_ATTEMPTS = 5;
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded?.split(',')[0].trim() ?? request.headers.get('x-real-ip') ?? 'unknown';
+
+    if (await isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "You're releasing snakes too fast! Please try again in a bit." },
+        { status: 429 }
+      );
+    }
+
     const supabase = getSupabaseClient();
 
     const body: SnakeSubmission = await request.json();

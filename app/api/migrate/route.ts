@@ -1,11 +1,18 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 
 const MAX_ISLAND_CAPACITY = 80;
 const MIGRATION_BATCH_SIZE = 20;
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    // Verify the request is authorized via a shared secret (e.g. Vercel Cron)
+    const authHeader = request.headers.get('authorization');
+    const cronSecret = process.env.CRON_SECRET;
+
+    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const supabase = getSupabaseClient();
 
     // Count current island snakes
