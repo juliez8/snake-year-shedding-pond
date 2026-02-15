@@ -100,7 +100,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
           selectedColor={selectedColor}
           onDrawingChange={setDrawingData}
           clearTrigger={clearTrigger}
-          wrapperClassName="bg-amber-50 border-0 shadow-none rounded-2xl"
+          wrapperClassName="bg-amber-50 border border-dashed border-amber-300/70 shadow-none rounded-2xl"
         />
       </div>
 
