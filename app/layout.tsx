@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={brushFont.className}>{children}</body>
+      <body className={`${brushFont.className} min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 overflow-x-hidden`}>{children}</body>
     </html>
   );
 }

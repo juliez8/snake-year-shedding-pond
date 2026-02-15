@@ -104,15 +104,20 @@ export default function SnakeCanvas({
     });
   }, [strokes, width, height]);
 
-  // Get coordinates in canvas space (works for pointer, mouse, touch)
+  // Get coordinates in canvas space - account for visual viewport on mobile
   const getPoint = (clientX: number, clientY: number): Point | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
+    const vv = typeof window !== 'undefined' && window.visualViewport;
+    const offsetX = vv ? vv.offsetLeft : 0;
+    const offsetY = vv ? vv.offsetTop : 0;
+    const scaleX = width / rect.width;
+    const scaleY = height / rect.height;
 
-    const x = (clientX - rect.left) * (width / rect.width);
-    const y = (clientY - rect.top) * (height / rect.height);
+    const x = (clientX + offsetX - rect.left) * scaleX;
+    const y = (clientY + offsetY - rect.top) * scaleY;
 
     return { x, y };
   };

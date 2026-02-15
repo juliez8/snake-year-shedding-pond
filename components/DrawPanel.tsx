@@ -121,8 +121,8 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         maxLength={140}
         rows={compact ? 2 : 3}
         placeholder="What do you wish to shed?"
-        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white text-amber-900/90 placeholder-amber-900/80 transition-colors"
-        style={{ fontSize: '16px' }}
+        className="w-full flex-shrink-0 px-4 py-2.5 border border-amber-200/80 rounded-2xl resize-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300/70 bg-white text-amber-900/90 placeholder-amber-900/80 placeholder:text-lg transition-colors"
+        style={{ fontSize: '18px' }}
       />
 
       <div className="text-right text-xs text-amber-600/70">

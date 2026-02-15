@@ -23,7 +23,7 @@ export default async function GalleryPage() {
   const snakes = await getGallerySnakes();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-4 px-4 sm:px-6" style={{ zoom: 0.9 }}>
+    <div className="min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-4 px-4 sm:px-6 overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header: title + count left, back button right - Anna's Garden style */}
         <div className="flex items-start justify-between gap-4 mb-4">
