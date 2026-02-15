@@ -162,8 +162,12 @@ export default function SnakeCanvas({
 
   const stop = (e: React.PointerEvent) => {
     e.preventDefault();
-    if (isDrawing && currentStroke.length > 1) {
-      setStrokes([...strokes, { color: selectedColor, points: currentStroke }]);
+    if (isDrawing && currentStroke.length >= 1) {
+      const points =
+        currentStroke.length >= 2
+          ? currentStroke
+          : [currentStroke[0], { ...currentStroke[0] }];
+      setStrokes([...strokes, { color: selectedColor, points }]);
     }
     setIsDrawing(false);
     setCurrentStroke([]);
