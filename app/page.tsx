@@ -42,31 +42,44 @@ export default function HomePage() {
     <div className="min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-3 sm:px-6 py-3 sm:py-5 overflow-x-hidden">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
-        {/* Compact header - title + one-line description + buttons */}
-        <div className="text-center flex-shrink-0 pb-2 sm:pb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            🐍 Shedding Island
-          </h1>
-          <p className="text-base sm:text-lg font-semibold text-gray-700 mt-1">
-            Draw a snake and release what no longer serves you. Watch it fade as you step into the Year of the Fire Horse
-          </p>
-          {/* On mobile: both buttons in header so no scroll needed */}
-          {isMobile ? (
-            <div className="flex justify-center gap-4 mt-3">
-              <button
-                onClick={() => setShowModal(true)}
-                className="px-6 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-base shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
-              >
-                Draw a Snake
-              </button>
+        {/* Header - title + subtitle, Visit Gallery always visible (desktop: top-right, mobile: below subtitle) */}
+        <div className="flex-shrink-0 pb-2 sm:pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+            <div className="text-center sm:text-left flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                🐍 Shedding Island
+              </h1>
+              <p className="text-base sm:text-lg font-semibold text-gray-700 mt-1">
+                Draw a snake and release what no longer serves you. Watch it fade as you step into the Year of the Fire Horse
+              </p>
+              {/* On mobile: Draw a Snake button in header */}
+              {isMobile ? (
+                <div className="flex justify-center gap-4 mt-3">
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="px-6 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-base shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
+                  >
+                    Draw a Snake
+                  </button>
+                  <a
+                    href="/gallery"
+                    className="px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
+                  >
+                    Visit Gallery
+                  </a>
+                </div>
+              ) : null}
+            </div>
+            {/* Desktop: Visit Gallery in header (always visible, no scroll) */}
+            {!isMobile && (
               <a
                 href="/gallery"
-                className="px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
+                className="shrink-0 px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200 self-center sm:self-start"
               >
                 Visit Gallery
               </a>
-            </div>
-          ) : null}
+            )}
+          </div>
         </div>
 
         {/* Main content - takes remaining space */}
@@ -91,19 +104,11 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Footer - snake count left, Visit Gallery right (desktop only; mobile has it in header) */}
-        <div className="flex-shrink-0 flex items-center justify-between gap-4 pt-2 sm:pt-4">
+        {/* Footer - snake count (Visit Gallery is in header on desktop) */}
+        <div className="flex-shrink-0 flex items-center gap-4 pt-2 sm:pt-4">
           <span className="text-gray-700 text-base sm:text-lg font-bold">
             {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
           </span>
-          {!isMobile && (
-            <a
-              href="/gallery"
-              className="px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shrink-0 shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
-            >
-              Visit Gallery
-            </a>
-          )}
         </div>
       </div>
 
