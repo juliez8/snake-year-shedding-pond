@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Snake } from '@/types/snake';
 import { calculateOpacityIsland } from '@/lib/fade';
 import SnakeDisplay from './SnakeDisplay';
@@ -17,8 +17,6 @@ interface IslandProps {
 export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationComplete }: IslandProps) {
   const [selectedSnake, setSelectedSnake] = useState<Snake | null>(null);
   const [opacities, setOpacities] = useState<Record<string, number>>({});
-  const onEntryAnimationCompleteRef = useRef(onEntryAnimationComplete);
-  onEntryAnimationCompleteRef.current = onEntryAnimationComplete;
 
   useEffect(() => {
     const updateOpacities = () => {
@@ -46,11 +44,11 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
 
     const timer = setTimeout(() => {
       setSelectedSnake(snake);
-      onEntryAnimationCompleteRef.current?.();
+      onEntryAnimationComplete?.();
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [lastAddedSnakeId, snakes]);
+  }, [lastAddedSnakeId, snakes, onEntryAnimationComplete]);
 
   return (
     <>

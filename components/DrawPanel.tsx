@@ -84,8 +84,8 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         Draw Your Snake
       </h2>
 
-      {/* Color Picker - relative z-index so taps register above canvas on mobile */}
-      <div className="relative z-10 w-full overflow-visible flex-shrink-0">
+      {/* Color Picker */}
+      <div className="w-full overflow-visible flex-shrink-0">
         <ColorPicker
           selectedColor={selectedColor}
           onColorChange={setSelectedColor}
