@@ -15,11 +15,3 @@ export function calculateOpacityIsland(createdAt: string): number {
   const progress = secondsPassed / fadeSeconds;
   return 1 - progress * (1 - ISLAND_MIN_OPACITY);
 }
-
-/**
- * Calculate opacity based on time elapsed (legacy - used for gallery: full opacity)
- * Gallery snakes are always shown at full opacity (pre-faded, preserved)
- */
-export function calculateOpacity(_createdAt: string): number {
-  return 1;
-}
