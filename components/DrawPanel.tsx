@@ -92,15 +92,15 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         />
       </div>
 
-      {/* Canvas - flex center to avoid clipping */}
-      <div className={`w-full flex-shrink-0 rounded-2xl border border-amber-100 shadow-[0_2px_12px_rgba(251,191,36,0.1),inset_0_1px_0_rgba(255,255,255,0.5)] flex justify-center ${compact ? 'p-1.5' : 'p-2'} ${embedded ? 'bg-amber-50/90' : 'bg-white/70'}`}>
+      {/* Canvas - no frame/border, background matches panel (amber-50) */}
+      <div className="w-full flex-shrink-0 flex justify-center">
         <SnakeCanvas
           width={canvasSize}
           height={canvasSize}
           selectedColor={selectedColor}
           onDrawingChange={setDrawingData}
           clearTrigger={clearTrigger}
-          wrapperClassName={embedded ? 'bg-amber-100/80 border-amber-200' : undefined}
+          wrapperClassName="bg-amber-50 border-0 shadow-none rounded-2xl"
         />
       </div>
 

@@ -110,7 +110,7 @@ export default function HomePage() {
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-amber-50/95 w-full max-w-sm rounded-2xl shadow-[0_4px_24px_rgba(251,191,36,0.2),0_2px_8px_rgba(0,0,0,0.06)] p-0 relative max-h-[90vh] flex flex-col min-h-0 overflow-hidden border-2 border-amber-200/90"
+            className="bg-amber-50/95 w-full max-w-sm rounded-2xl shadow-[0_4px_24px_rgba(251,191,36,0.2),0_2px_8px_rgba(0,0,0,0.06)] p-0 relative max-h-[90vh] flex flex-col items-center min-h-0 overflow-hidden border-2 border-amber-200/90"
             onClick={(e) => e.stopPropagation()}
           >
             <button
