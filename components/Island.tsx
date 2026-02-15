@@ -170,7 +170,7 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     <>
       {/* Outer wrapper — padding prevents top/edge cutoff; filter gives organic shadow */}
       <div
-        className="relative w-full max-w-4xl mx-auto py-4 overflow-visible"
+        className="relative w-full max-w-4xl mx-auto py-1 sm:py-4 overflow-visible"
         style={{ filter: 'drop-shadow(0 12px 32px rgba(0,60,80,0.22)) drop-shadow(0 4px 14px rgba(0,40,60,0.12))' }}
       >
         {/* SVG clip-path definition — distinctive organic pond blob */}
@@ -221,38 +221,40 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
             }}
           />
 
-          {/* ── Layer 2a: Solo lily pads (no flowers) ── */}
-          {soloPads.map((pad, i) => (
-            <motion.div
-              key={`pad-${i}`}
-              className={`absolute ${pad.size} ${pad.opacity} pointer-events-none`}
-              style={{
-                top: pad.top, left: pad.left, right: pad.right, bottom: pad.bottom,
-                zIndex: 2,
-              }}
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: pad.duration, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <div style={{ transform: `rotate(${pad.rotate ?? 0}deg)` }}>
-                <LilyPadSVG flip={pad.flip} />
-              </div>
-            </motion.div>
-          ))}
+          {/* ── Decorations container — scales down on mobile ── */}
+          <div className="absolute inset-0 scale-[0.65] sm:scale-100 origin-center pointer-events-none" style={{ zIndex: 2 }}>
+            {/* ── Layer 2a: Solo lily pads (no flowers) ── */}
+            {soloPads.map((pad, i) => (
+              <motion.div
+                key={`pad-${i}`}
+                className={`absolute ${pad.size} ${pad.opacity} pointer-events-none`}
+                style={{
+                  top: pad.top, left: pad.left, right: pad.right, bottom: pad.bottom,
+                }}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ duration: pad.duration, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <div style={{ transform: `rotate(${pad.rotate ?? 0}deg)` }}>
+                  <LilyPadSVG flip={pad.flip} />
+                </div>
+              </motion.div>
+            ))}
 
-          {/* ── Layer 2b: Lotus flowers on pads ── */}
-          {lotusGroups.map((g, i) => (
-            <LotusWithPad
-              key={`lotus-${i}`}
-              padClass={g.padSize}
-              flowerClass={g.flowerSize}
-              flip={g.flip}
-              duration={g.duration}
-              style={{
-                top: g.top, left: g.left, right: g.right, bottom: g.bottom,
-                zIndex: 3, opacity: parseFloat(g.opacity.replace('opacity-', '')) / 100,
-              }}
-            />
-          ))}
+            {/* ── Layer 2b: Lotus flowers on pads ── */}
+            {lotusGroups.map((g, i) => (
+              <LotusWithPad
+                key={`lotus-${i}`}
+                padClass={g.padSize}
+                flowerClass={g.flowerSize}
+                flip={g.flip}
+                duration={g.duration}
+                style={{
+                  top: g.top, left: g.left, right: g.right, bottom: g.bottom,
+                  zIndex: 3, opacity: parseFloat(g.opacity.replace('opacity-', '')) / 100,
+                }}
+              />
+            ))}
+          </div>
 
           {/* ── Layer 3: Snakes (rendered above everything) ── */}
           {snakes.map((snake) => {

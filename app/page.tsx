@@ -39,38 +39,38 @@ export default function HomePage() {
   }, [fetchSnakes]);
 
   return (
-    <div className="min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-3 sm:px-6 py-3 sm:py-5 overflow-x-hidden">
+    <div className="min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-2 sm:px-6 py-2 sm:py-5 overflow-x-hidden">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
-        {/* Header - title + subtitle, Visit Gallery always visible (desktop: top-right, mobile: below subtitle) */}
-        <div className="flex-shrink-0 pb-1 sm:pb-4">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+        {/* Header */}
+        <div className="flex-shrink-0 pb-0 sm:pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
             <div className="text-center sm:text-left flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
                 🐍 Shedding Island
               </h1>
-              <p className="text-base sm:text-lg font-semibold text-gray-700 mt-1">
+              <p className="text-sm sm:text-lg font-semibold text-gray-700 mt-0.5 sm:mt-1">
                 Draw a snake and release what no longer serves you. Watch it fade as you step into the Year of the Fire Horse
               </p>
-              {/* On mobile: Draw a Snake button in header */}
+              {/* On mobile: buttons in header, compact */}
               {isMobile ? (
-                <div className="flex justify-center gap-4 mt-2">
+                <div className="flex justify-center gap-3 mt-1.5">
                   <button
                     onClick={() => setShowModal(true)}
-                    className="px-6 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-base shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
+                    className="px-5 py-2.5 bg-amber-400 text-amber-950 rounded-xl font-medium text-sm shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
                   >
                     Draw a Snake
                   </button>
                   <a
                     href="/gallery"
-                    className="px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
+                    className="px-5 py-2.5 bg-red-900 text-amber-50 rounded-xl font-medium text-sm shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
                   >
                     Visit Gallery
                   </a>
                 </div>
               ) : null}
             </div>
-            {/* Desktop: Visit Gallery in header (always visible, no scroll) */}
+            {/* Desktop: Visit Gallery in header */}
             {!isMobile && (
               <a
                 href="/gallery"
@@ -82,9 +82,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Main content - takes remaining space; on mobile island gets more room, less gap */}
-        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-1 sm:gap-4 lg:gap-8 transition-all duration-300">
-          <div className="flex-1 min-w-0 min-h-[min(55vh,420px)] sm:min-h-[280px] flex items-center justify-center overflow-visible">
+        {/* Main content — pond fills available space immediately */}
+        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-0 sm:gap-4 lg:gap-8 transition-all duration-300">
+          <div className="flex-1 min-w-0 flex items-start sm:items-center justify-center overflow-visible pt-1 sm:pt-0">
             <Island
               snakes={snakes}
               lastAddedSnakeId={lastAddedSnakeId}
