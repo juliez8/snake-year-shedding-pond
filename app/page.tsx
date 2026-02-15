@@ -42,26 +42,35 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-4 sm:px-6 py-4 sm:py-6">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
-        {/* Compact header - title + one-line description + Draw button (mobile) */}
-        <div className="text-center flex-shrink-0 pb-3 sm:pb-4">
+        {/* Compact header - title + one-line description + buttons */}
+        <div className="text-center flex-shrink-0 pb-2 sm:pb-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             🐍 Shedding Island
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 mt-1">
             Draw a snake, shed what you wish—it fades over 8 hours
           </p>
-          {isMobile && (
-            <button
-              onClick={() => setShowModal(true)}
-              className="mt-3 px-4 py-2 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700 transition-colors text-sm"
-            >
-              Draw a Snake
-            </button>
-          )}
+          {/* On mobile: both buttons in header so no scroll needed */}
+          {isMobile ? (
+            <div className="flex justify-center gap-3 mt-2">
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700 transition-colors text-sm"
+              >
+                Draw a Snake
+              </button>
+              <a
+                href="/gallery"
+                className="px-4 py-2 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm"
+              >
+                Visit Gallery
+              </a>
+            </div>
+          ) : null}
         </div>
 
         {/* Main content - takes remaining space */}
-        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-4 lg:gap-8 transition-all duration-300">
+        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-2 sm:gap-4 lg:gap-8 transition-all duration-300">
           <div className="flex-1 min-w-0 min-h-[200px] sm:min-h-[240px] lg:min-h-[280px] flex items-center justify-center">
             <Island
               snakes={snakes}
@@ -82,17 +91,19 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Footer - snake count left, Visit Gallery bottom right */}
-        <div className="flex-shrink-0 flex items-center justify-between gap-4 pt-3 sm:pt-4">
+        {/* Footer - snake count left, Visit Gallery right (desktop only; mobile has it in header) */}
+        <div className="flex-shrink-0 flex items-center justify-between gap-4 pt-2 sm:pt-4">
           <span className="text-gray-600 text-xs sm:text-sm">
             {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
           </span>
-          <a
-            href="/gallery"
-            className="px-4 py-2 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm shrink-0"
-          >
-            Visit Gallery
-          </a>
+          {!isMobile && (
+            <a
+              href="/gallery"
+              className="px-4 py-2 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm shrink-0"
+            >
+              Visit Gallery
+            </a>
+          )}
         </div>
       </div>
 
