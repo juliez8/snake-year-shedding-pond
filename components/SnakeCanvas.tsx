@@ -12,7 +12,7 @@ interface SnakeCanvasProps {
   wrapperClassName?: string;
 }
 
-const BRUSH_WIDTH = 10;
+const BRUSH_WIDTH = 13;
 
 export default function SnakeCanvas({
   width = 340,

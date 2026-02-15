@@ -11,7 +11,7 @@ interface SnakeDisplayProps {
   className?: string;
 }
 
-const BRUSH_WIDTH = 4;
+const BRUSH_WIDTH = 13;
 
 export default function SnakeDisplay({
   drawing,
