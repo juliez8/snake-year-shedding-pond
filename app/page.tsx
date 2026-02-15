@@ -84,7 +84,7 @@ export default function HomePage() {
 
         {/* Main content - takes remaining space; on mobile island gets more room, less gap */}
         <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-1 sm:gap-4 lg:gap-8 transition-all duration-300">
-          <div className="flex-1 min-w-0 min-h-[min(55vh,420px)] sm:min-h-[280px] flex items-center justify-center">
+          <div className="flex-1 min-w-0 min-h-[min(55vh,420px)] sm:min-h-[280px] flex items-center justify-center overflow-visible">
             <Island
               snakes={snakes}
               lastAddedSnakeId={lastAddedSnakeId}
