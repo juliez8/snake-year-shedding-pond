@@ -39,44 +39,30 @@ export default function HomePage() {
   }, [fetchSnakes]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-8 px-4 sm:py-12 sm:px-6">
-      <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 flex flex-col px-4 sm:px-6 py-4 sm:py-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
-        {/* Header - ALWAYS VISIBLE */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
+        {/* Compact header - title + one-line description + Draw button (mobile) */}
+        <div className="text-center flex-shrink-0 pb-3 sm:pb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             🐍 Shedding Island
           </h1>
-
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
-            Draw a snake and attach what you wish to shed.
-            Watch it fade over 8 hours as you step into the new year.
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            Draw a snake, shed what you wish—it fades over 8 hours
           </p>
-
-          {/* Buttons - ALWAYS VISIBLE on both mobile and desktop */}
-          <div className="flex justify-center gap-3 sm:gap-4 mt-6 flex-wrap">
-            {isMobile && (
-              <button
-                onClick={() => setShowModal(true)}
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700 transition-colors text-sm sm:text-base"
-              >
-                Draw a Snake
-              </button>
-            )}
-
-            <a
-              href="/gallery"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm sm:text-base"
+          {isMobile && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="mt-3 px-4 py-2 bg-orange-600 text-white rounded-xl shadow-md hover:bg-orange-700 transition-colors text-sm"
             >
-              Visit Gallery
-            </a>
-          </div>
+              Draw a Snake
+            </button>
+          )}
         </div>
 
-        {/* Main Content Area - island flexes with viewport */}
-        <div className="w-full min-h-0 flex flex-col lg:flex-row lg:items-stretch gap-6 lg:gap-12 transition-all duration-300">
-          {/* Island - flexible, fills available space, responds to resize */}
-          <div className="flex-1 min-w-0 min-h-[280px] lg:min-h-[320px] flex items-center justify-center">
+        {/* Main content - takes remaining space */}
+        <div className="flex-1 min-h-0 w-full flex flex-col lg:flex-row lg:items-stretch gap-4 lg:gap-8 transition-all duration-300">
+          <div className="flex-1 min-w-0 min-h-[200px] sm:min-h-[240px] lg:min-h-[280px] flex items-center justify-center">
             <Island
               snakes={snakes}
               lastAddedSnakeId={lastAddedSnakeId}
@@ -84,7 +70,6 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Draw Panel - fixed width on desktop, full width on mobile when not in modal */}
           {!isMobile && (
             <div className="w-[340px] flex-shrink-0 flex">
               <DrawPanel
@@ -97,9 +82,17 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Snake count */}
-        <div className="text-center text-gray-600 text-sm">
-          {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
+        {/* Footer - snake count left, Visit Gallery bottom right */}
+        <div className="flex-shrink-0 flex items-center justify-between gap-4 pt-3 sm:pt-4">
+          <span className="text-gray-600 text-xs sm:text-sm">
+            {snakes.length} snake{snakes.length !== 1 ? 's' : ''} on the island
+          </span>
+          <a
+            href="/gallery"
+            className="px-4 py-2 bg-gray-800 text-white rounded-xl shadow-md hover:bg-gray-700 transition-colors text-sm shrink-0"
+          >
+            Visit Gallery
+          </a>
         </div>
       </div>
 
