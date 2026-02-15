@@ -39,13 +39,13 @@ export default function SnakeModal({ isOpen, message, onClose }: SnakeModalProps
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-center space-y-4">
-          <p className="text-lg text-gray-600 leading-relaxed">
+          <p className="text-xl text-gray-600 leading-relaxed">
             You have shed:
           </p>
-          <p className="text-xl font-medium text-gray-900 italic">
+          <p className="text-2xl sm:text-3xl font-medium text-gray-900 italic leading-relaxed break-words">
             "{message}"
           </p>
-          <p className="text-base text-gray-600 leading-relaxed pt-4">
+          <p className="text-lg text-gray-600 leading-relaxed pt-4">
             The Snake carries it forward.
             <br />
             You are ready for the Fire Horse Year.
