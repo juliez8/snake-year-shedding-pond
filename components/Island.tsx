@@ -72,27 +72,25 @@ function LotusWithPad({ padClass, flowerClass, style, flip, duration }: {
   );
 }
 
-/* ── Scattered solo lily pads (no flower) ── */
-const soloPads: { top?: string; left?: string; right?: string; bottom?: string; size: string; opacity: string; flip?: boolean; duration: number; rotate?: number }[] = [
-  // Top edge
+type PadEntry = { top?: string; left?: string; right?: string; bottom?: string; size: string; opacity: string; flip?: boolean; duration: number; rotate?: number };
+type LotusEntry = { top?: string; left?: string; right?: string; bottom?: string; padSize: string; flowerSize: string; opacity: string; flip?: boolean; duration: number };
+
+/* ── Desktop: full decoration set (landscape 4:3) ── */
+const desktopPads: PadEntry[] = [
   { top: '4%',  left: '4%',  size: 'w-24', opacity: 'opacity-60', duration: 9, rotate: -12 },
   { top: '6%',  left: '20%', size: 'w-20', opacity: 'opacity-50', flip: true, duration: 10, rotate: 8 },
   { top: '3%',  right: '8%', size: 'w-28', opacity: 'opacity-55', duration: 8.5, rotate: 15 },
   { top: '10%', right: '30%', size: 'w-16', opacity: 'opacity-45', flip: true, duration: 11, rotate: -20 },
   { top: '8%',  left: '42%', size: 'w-18', opacity: 'opacity-40', duration: 10.5, rotate: 25 },
-  // Bottom edge
   { bottom: '5%', left: '8%', size: 'w-26', opacity: 'opacity-55', duration: 9.5, rotate: 5 },
   { bottom: '3%', left: '32%', size: 'w-20', opacity: 'opacity-50', flip: true, duration: 10.5, rotate: -8 },
   { bottom: '8%', right: '5%', size: 'w-24', opacity: 'opacity-60', duration: 8, rotate: 22 },
   { bottom: '12%', right: '28%', size: 'w-18', opacity: 'opacity-45', duration: 11.5, rotate: -15 },
   { bottom: '6%', left: '55%', size: 'w-16', opacity: 'opacity-42', flip: true, duration: 9.8, rotate: 35 },
-  // Left edge
   { top: '30%', left: '2%', size: 'w-18', opacity: 'opacity-45', flip: true, duration: 10, rotate: 30 },
   { top: '55%', left: '3%', size: 'w-22', opacity: 'opacity-50', duration: 9.2, rotate: -18 },
-  // Right edge
   { top: '38%', right: '2%', size: 'w-20', opacity: 'opacity-45', duration: 9, rotate: -25 },
   { top: '58%', right: '4%', size: 'w-16', opacity: 'opacity-40', flip: true, duration: 10.8, rotate: 12 },
-  // Middle scattered
   { top: '22%', left: '55%', size: 'w-16', opacity: 'opacity-35', duration: 11, rotate: 40 },
   { top: '65%', left: '22%', size: 'w-16', opacity: 'opacity-35', flip: true, duration: 10.2, rotate: -35 },
   { top: '35%', left: '30%', size: 'w-14', opacity: 'opacity-30', duration: 10.8, rotate: 15 },
@@ -103,25 +101,44 @@ const soloPads: { top?: string; left?: string; right?: string; bottom?: string; 
   { top: '42%', left: '18%', size: 'w-14', opacity: 'opacity-30', flip: true, duration: 10.1, rotate: -45 },
 ];
 
-/* ── Lotus flowers with pads ── */
-const lotusGroups: { top?: string; left?: string; right?: string; bottom?: string; padSize: string; flowerSize: string; opacity: string; flip?: boolean; duration: number }[] = [
-  // Top area
+const desktopLotus: LotusEntry[] = [
   { top: '5%',  left: '30%',  padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-80', duration: 7.5 },
   { top: '4%',  right: '15%', padSize: 'w-32', flowerSize: 'w-18', opacity: 'opacity-85', flip: true, duration: 8.5 },
   { top: '12%', left: '8%',   padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-70', duration: 9.2 },
-  // Bottom area
   { bottom: '5%', left: '15%', padSize: 'w-30', flowerSize: 'w-16', opacity: 'opacity-75', duration: 9 },
   { bottom: '8%', right: '15%', padSize: 'w-28', flowerSize: 'w-14', opacity: 'opacity-70', flip: true, duration: 7 },
   { bottom: '4%', left: '45%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-72', duration: 8.8 },
-  // Side edges
   { top: '28%', left: '3%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', duration: 8 },
   { top: '48%', right: '3%', padSize: 'w-24', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 9.5 },
   { top: '62%', left: '5%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-55', flip: true, duration: 10 },
   { top: '35%', right: '5%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', duration: 7.8 },
-  // Middle area
   { top: '38%', left: '35%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-50', duration: 9.2 },
   { top: '55%', left: '55%', padSize: 'w-20', flowerSize: 'w-10', opacity: 'opacity-45', flip: true, duration: 10.3 },
   { top: '25%', left: '48%', padSize: 'w-20', flowerSize: 'w-10', opacity: 'opacity-48', duration: 8.7 },
+];
+
+/* ── Mobile: curated fewer decorations for vertical pond ── */
+const mobilePads: PadEntry[] = [
+  { top: '2%',  left: '5%',  size: 'w-14', opacity: 'opacity-50', duration: 9, rotate: -10 },
+  { top: '3%',  right: '10%', size: 'w-16', opacity: 'opacity-45', flip: true, duration: 10, rotate: 15 },
+  { top: '15%', left: '55%', size: 'w-12', opacity: 'opacity-40', duration: 10.5, rotate: 25 },
+  { top: '30%', left: '3%', size: 'w-14', opacity: 'opacity-40', flip: true, duration: 11, rotate: -20 },
+  { top: '45%', right: '5%', size: 'w-12', opacity: 'opacity-35', duration: 9.5, rotate: 30 },
+  { top: '55%', left: '8%', size: 'w-14', opacity: 'opacity-40', duration: 10.2, rotate: -15 },
+  { top: '70%', right: '8%', size: 'w-12', opacity: 'opacity-35', flip: true, duration: 9.8, rotate: 20 },
+  { bottom: '5%', left: '15%', size: 'w-14', opacity: 'opacity-45', duration: 10.8, rotate: 5 },
+  { bottom: '3%', right: '15%', size: 'w-12', opacity: 'opacity-40', flip: true, duration: 9.2, rotate: -25 },
+  { top: '38%', left: '40%', size: 'w-10', opacity: 'opacity-28', duration: 11.3, rotate: 40 },
+  { top: '60%', left: '50%', size: 'w-10', opacity: 'opacity-25', flip: true, duration: 10.5, rotate: -30 },
+];
+
+const mobileLotus: LotusEntry[] = [
+  { top: '4%',  left: '25%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-75', duration: 8 },
+  { top: '18%', right: '8%', padSize: 'w-20', flowerSize: 'w-11', opacity: 'opacity-70', flip: true, duration: 9 },
+  { top: '35%', left: '5%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-65', duration: 8.5 },
+  { top: '50%', right: '6%', padSize: 'w-16', flowerSize: 'w-9', opacity: 'opacity-60', flip: true, duration: 9.5 },
+  { top: '68%', left: '10%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-65', duration: 7.8 },
+  { bottom: '6%', left: '42%', padSize: 'w-16', flowerSize: 'w-9', opacity: 'opacity-60', flip: true, duration: 8.8 },
 ];
 
 interface IslandProps {
@@ -133,6 +150,14 @@ interface IslandProps {
 export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationComplete }: IslandProps) {
   const [selectedSnake, setSelectedSnake] = useState<Snake | null>(null);
   const [opacities, setOpacities] = useState<Record<string, number>>({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     const updateOpacities = () => {
@@ -173,19 +198,22 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
         className="relative w-full max-w-4xl mx-auto py-1 sm:py-4 overflow-visible"
         style={{ filter: 'drop-shadow(0 12px 32px rgba(0,60,80,0.22)) drop-shadow(0 4px 14px rgba(0,40,60,0.12))' }}
       >
-        {/* SVG clip-path definition — distinctive organic pond blob */}
+        {/* SVG clip-path definitions — vertical blob for mobile, horizontal for desktop */}
         <svg width="0" height="0" className="absolute" aria-hidden="true">
           <defs>
-            <clipPath id="pondClip" clipPathUnits="objectBoundingBox">
+            <clipPath id="pondClipDesktop" clipPathUnits="objectBoundingBox">
               <path d="M0.44,0.06 C0.56,0.03 0.72,0.03 0.84,0.08 C0.93,0.14 0.96,0.26 0.95,0.40 C0.94,0.52 0.96,0.60 0.94,0.72 C0.91,0.83 0.85,0.91 0.76,0.95 C0.66,0.98 0.54,0.96 0.44,0.94 C0.35,0.92 0.27,0.97 0.18,0.94 C0.10,0.90 0.06,0.80 0.05,0.69 C0.04,0.57 0.07,0.48 0.06,0.37 C0.05,0.26 0.04,0.18 0.09,0.11 C0.16,0.04 0.32,0.03 0.44,0.06Z" />
+            </clipPath>
+            <clipPath id="pondClipMobile" clipPathUnits="objectBoundingBox">
+              <path d="M0.50,0.03 C0.68,0.02 0.85,0.04 0.93,0.10 C0.98,0.16 0.97,0.26 0.96,0.36 C0.95,0.46 0.97,0.54 0.95,0.64 C0.93,0.74 0.96,0.82 0.92,0.90 C0.86,0.96 0.72,0.98 0.56,0.97 C0.42,0.96 0.30,0.99 0.18,0.96 C0.08,0.92 0.04,0.84 0.04,0.74 C0.04,0.64 0.06,0.55 0.05,0.45 C0.04,0.35 0.03,0.26 0.05,0.17 C0.08,0.08 0.18,0.03 0.32,0.02 C0.40,0.02 0.45,0.03 0.50,0.03Z" />
             </clipPath>
           </defs>
         </svg>
 
         <div
-          className="relative w-full aspect-[4/3] overflow-hidden transition-all duration-300 ease-out"
+          className={`relative w-full overflow-hidden transition-all duration-300 ease-out ${isMobile ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}
           style={{
-            clipPath: 'url(#pondClip)',
+            clipPath: isMobile ? 'url(#pondClipMobile)' : 'url(#pondClipDesktop)',
             background: 'linear-gradient(155deg, #7DCDD8 0%, #5ABEC9 15%, #48B0BF 35%, #5CBDCC 50%, #42A8B8 70%, #55B8C8 85%, #6AC5D2 100%)',
           }}
         >
@@ -221,10 +249,9 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
             }}
           />
 
-          {/* ── Decorations container — scales down on mobile ── */}
-          <div className="absolute inset-0 scale-[0.65] sm:scale-100 origin-center pointer-events-none" style={{ zIndex: 2 }}>
-            {/* ── Layer 2a: Solo lily pads (no flowers) ── */}
-            {soloPads.map((pad, i) => (
+          {/* ── Decorations ── */}
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+            {(isMobile ? mobilePads : desktopPads).map((pad, i) => (
               <motion.div
                 key={`pad-${i}`}
                 className={`absolute ${pad.size} ${pad.opacity} pointer-events-none`}
@@ -240,8 +267,7 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
               </motion.div>
             ))}
 
-            {/* ── Layer 2b: Lotus flowers on pads ── */}
-            {lotusGroups.map((g, i) => (
+            {(isMobile ? mobileLotus : desktopLotus).map((g, i) => (
               <LotusWithPad
                 key={`lotus-${i}`}
                 padClass={g.padSize}
