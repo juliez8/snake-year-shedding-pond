@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Liu_Jian_Mao_Cao } from 'next/font/google';
+import { Long_Cang } from 'next/font/google';
 import './globals.css';
 
-const brushFont = Liu_Jian_Mao_Cao({
+const brushFont = Long_Cang({
   weight: '400',
   subsets: ['latin'],
 });

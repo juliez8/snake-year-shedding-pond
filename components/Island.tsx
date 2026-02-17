@@ -212,7 +212,10 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
       {/* Outer wrapper — padding prevents top/edge cutoff; filter gives organic shadow */}
       <div
         className="relative w-full max-w-4xl mx-auto py-1 sm:py-4 overflow-visible"
-        style={{ filter: 'drop-shadow(0 12px 32px rgba(0,60,80,0.22)) drop-shadow(0 4px 14px rgba(0,40,60,0.12))' }}
+        style={{ filter: isMobile
+          ? 'drop-shadow(0 4px 12px rgba(0,60,80,0.10))'
+          : 'drop-shadow(0 12px 32px rgba(0,60,80,0.22)) drop-shadow(0 4px 14px rgba(0,40,60,0.12))'
+        }}
       >
         {/* SVG clip-path definitions — vertical blob for mobile, horizontal for desktop */}
         <svg width="0" height="0" className="absolute" aria-hidden="true">

@@ -67,7 +67,7 @@ export default function GalleryClient({ initialSnakes, totalCount, pageSize }: G
           <button
             onClick={loadMore}
             disabled={isLoading}
-            className="px-8 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-sm shadow-[0_2px_8px_rgba(251,191,36,0.25)] hover:shadow-[0_4px_12px_rgba(251,191,36,0.3)] hover:bg-amber-500 disabled:bg-amber-200 disabled:text-amber-600/70 disabled:cursor-not-allowed transition-all duration-200"
+            className="px-8 py-3 bg-amber-400 text-amber-950 rounded-xl font-medium text-base shadow-[0_2px_8px_rgba(251,191,36,0.25)] hover:shadow-[0_4px_12px_rgba(251,191,36,0.3)] hover:bg-amber-500 disabled:bg-amber-200 disabled:text-amber-600/70 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? 'Loading...' : `Load More (${snakes.length} of ${totalCount})`}
           </button>

@@ -80,7 +80,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
   return (
     <div className={`${outerStyles} ${compact ? 'p-4 pt-14 space-y-2' : 'p-5 space-y-2'}`}>
 
-      <h2 className={`font-medium text-amber-900/90 text-center tracking-wide ${compact ? 'text-base' : 'text-lg'}`}>
+      <h2 className={`font-medium text-amber-900/90 text-center tracking-wide ${compact ? 'text-xl' : 'text-2xl'}`}>
         Draw Your Snake
       </h2>
 
@@ -140,7 +140,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="w-full flex-shrink-0 py-3 bg-gradient-to-r from-amber-300 via-amber-200 to-yellow-200 text-amber-900 rounded-full hover:from-amber-400 hover:via-amber-300 hover:to-yellow-300 disabled:from-amber-100 disabled:via-amber-100 disabled:to-amber-100 disabled:text-amber-400 disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium shadow-[0_2px_10px_rgba(217,168,68,0.3)] hover:shadow-[0_4px_14px_rgba(217,168,68,0.4)] active:scale-[0.99]"
+        className="w-full flex-shrink-0 py-3 bg-gradient-to-r from-amber-300 via-amber-200 to-yellow-200 text-amber-900 rounded-full hover:from-amber-400 hover:via-amber-300 hover:to-yellow-300 disabled:from-amber-100 disabled:via-amber-100 disabled:to-amber-100 disabled:text-amber-400 disabled:cursor-not-allowed transition-all duration-200 text-lg font-medium shadow-[0_2px_10px_rgba(217,168,68,0.3)] hover:shadow-[0_4px_14px_rgba(217,168,68,0.4)] active:scale-[0.99]"
       >
         {isSubmitting ? 'Releasing...' : 'Release Snake'}
       </button>
