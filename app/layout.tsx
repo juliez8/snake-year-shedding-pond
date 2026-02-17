@@ -8,9 +8,19 @@ const brushFont = Liu_Jian_Mao_Cao({
 });
 
 export const metadata: Metadata = {
-  title: 'Shedding Island | Year of the Snake',
-  description: 'An anonymous web ritual for Lunar New Year. Draw a snake, shed the past, welcome the Fire Horse Year.',
-  keywords: ['lunar new year', 'year of the snake', 'web art', 'ritual', 'anonymous'],
+  title: 'Shedding Pond — Release What No Longer Serves You',
+  description: 'A Spring Festival experience 🐍 Draw a snake, whisper what you wish to let go, and watch it drift into the pond.',
+  keywords: ['spring festival', 'lunar new year', 'year of the snake', 'shedding', 'web art', 'ritual', 'anonymous'],
+  openGraph: {
+    title: 'Shedding Pond — Release What No Longer Serves You',
+    description: 'A Spring Festival experience 🐍 Draw a snake, whisper what you wish to let go, and watch it drift into the pond.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Shedding Pond — Release What No Longer Serves You',
+    description: 'A Spring Festival experience 🐍 Draw a snake, whisper what you wish to let go, and watch it drift into the pond.',
+  },
 };
 
 export default function RootLayout({
