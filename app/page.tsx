@@ -46,8 +46,8 @@ export default function HomePage() {
         <div className="flex-shrink-0 pb-0 sm:pb-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
             <div className="text-center sm:text-left flex-1">
-              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
-                🐍 Shedding Island
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+                🐍 Julie&apos;s Snake Shedding Pond
               </h1>
               <p className="text-sm sm:text-lg font-semibold text-gray-700 mt-0.5 sm:mt-1">
                 Draw a snake and release what no longer serves you. Watch it fade as you step into the Year of the Fire Horse
@@ -93,7 +93,7 @@ export default function HomePage() {
           </div>
 
           {!isMobile && (
-            <div className="w-[340px] flex-shrink-0 flex">
+            <div className="w-[340px] flex-shrink-0 self-start">
               <DrawPanel
                 onSuccess={(result) => {
                   if (!result.addedToGallery) setLastAddedSnakeId(result.snakeId);

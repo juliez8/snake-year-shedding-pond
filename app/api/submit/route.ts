@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 import { validateSnakeGeometry, sanitizeMessage } from '@/lib/validation';
+import { moderateMessage } from '@/lib/moderation';
 import { SnakeSubmission } from '@/types/snake';
 import { generateRandomPosition } from '@/lib/positions';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rateLimit';
@@ -65,6 +66,15 @@ export async function POST(request: NextRequest) {
       );
     }
     const cleanMessage = messageResult.message;
+
+    // --- Content moderation ---
+    const moderationError = moderateMessage(cleanMessage);
+    if (moderationError) {
+      return NextResponse.json(
+        { error: moderationError },
+        { status: 400, headers: rlHeaders }
+      );
+    }
 
     // --- Validate drawing data (deep validation: colors, coordinates, structure) ---
     if (!drawing_data || typeof drawing_data !== 'object') {

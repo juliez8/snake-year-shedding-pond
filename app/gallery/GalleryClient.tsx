@@ -76,6 +76,7 @@ export default function GalleryClient({ initialSnakes, totalCount, pageSize }: G
 
       <SnakeModal
         isOpen={selectedSnake !== null}
+        snakeId={selectedSnake?.id}
         message={selectedSnake?.message ?? ''}
         onClose={() => setSelectedSnake(null)}
       />

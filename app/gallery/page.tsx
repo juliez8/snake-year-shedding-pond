@@ -42,12 +42,12 @@ export default async function GalleryPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">SNAKE GALLERY</h1>
-            <p className="text-amber-800/80 font-semibold text-sm sm:text-base mt-0.5">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-amber-900">SNAKE GALLERY</h1>
+            <p className="text-amber-800/80 font-semibold text-base sm:text-lg lg:text-xl mt-1">
               {totalCount.toLocaleString()} TOTAL SNAKES
             </p>
-            <p className="text-amber-700/60 text-sm mt-1.5 max-w-md">
-              Tap any snake to read what was released—and what they are ready to become.
+            <p className="text-amber-700/60 text-sm sm:text-base lg:text-lg mt-2 max-w-lg">
+              Tap any snake to read what was released.
             </p>
           </div>
           <a

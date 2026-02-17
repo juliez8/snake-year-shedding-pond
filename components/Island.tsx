@@ -102,19 +102,19 @@ const desktopPads: PadEntry[] = [
 ];
 
 const desktopLotus: LotusEntry[] = [
-  { top: '5%',  left: '30%',  padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-80', duration: 7.5 },
-  { top: '4%',  right: '15%', padSize: 'w-32', flowerSize: 'w-18', opacity: 'opacity-85', flip: true, duration: 8.5 },
-  { top: '12%', left: '8%',   padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-70', duration: 9.2 },
-  { bottom: '5%', left: '15%', padSize: 'w-30', flowerSize: 'w-16', opacity: 'opacity-75', duration: 9 },
-  { bottom: '8%', right: '15%', padSize: 'w-28', flowerSize: 'w-14', opacity: 'opacity-70', flip: true, duration: 7 },
-  { bottom: '4%', left: '45%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-72', duration: 8.8 },
-  { top: '28%', left: '3%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', duration: 8 },
-  { top: '48%', right: '3%', padSize: 'w-24', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 9.5 },
-  { top: '62%', left: '5%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-55', flip: true, duration: 10 },
-  { top: '35%', right: '5%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', duration: 7.8 },
-  { top: '38%', left: '35%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-50', duration: 9.2 },
-  { top: '55%', left: '55%', padSize: 'w-20', flowerSize: 'w-10', opacity: 'opacity-45', flip: true, duration: 10.3 },
-  { top: '25%', left: '48%', padSize: 'w-20', flowerSize: 'w-10', opacity: 'opacity-48', duration: 8.7 },
+  { top: '5%',  left: '30%',  padSize: 'w-40', flowerSize: 'w-24', opacity: 'opacity-80', duration: 7.5 },
+  { top: '4%',  right: '15%', padSize: 'w-44', flowerSize: 'w-26', opacity: 'opacity-85', flip: true, duration: 8.5 },
+  { top: '12%', left: '8%',   padSize: 'w-36', flowerSize: 'w-20', opacity: 'opacity-70', duration: 9.2 },
+  { bottom: '5%', left: '15%', padSize: 'w-42', flowerSize: 'w-24', opacity: 'opacity-75', duration: 9 },
+  { bottom: '8%', right: '15%', padSize: 'w-40', flowerSize: 'w-22', opacity: 'opacity-70', flip: true, duration: 7 },
+  { bottom: '4%', left: '45%', padSize: 'w-36', flowerSize: 'w-20', opacity: 'opacity-72', duration: 8.8 },
+  { top: '28%', left: '3%', padSize: 'w-36', flowerSize: 'w-20', opacity: 'opacity-65', duration: 8 },
+  { top: '48%', right: '3%', padSize: 'w-34', flowerSize: 'w-18', opacity: 'opacity-60', flip: true, duration: 9.5 },
+  { top: '62%', left: '5%', padSize: 'w-32', flowerSize: 'w-18', opacity: 'opacity-55', flip: true, duration: 10 },
+  { top: '35%', right: '5%', padSize: 'w-36', flowerSize: 'w-20', opacity: 'opacity-65', duration: 7.8 },
+  { top: '38%', left: '35%', padSize: 'w-32', flowerSize: 'w-18', opacity: 'opacity-50', duration: 9.2 },
+  { top: '55%', left: '55%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-45', flip: true, duration: 10.3 },
+  { top: '25%', left: '48%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-48', duration: 8.7 },
 ];
 
 /* ── Mobile: curated fewer decorations for vertical pond ── */
@@ -133,12 +133,12 @@ const mobilePads: PadEntry[] = [
 ];
 
 const mobileLotus: LotusEntry[] = [
-  { top: '4%',  left: '25%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-75', duration: 8 },
-  { top: '18%', right: '8%', padSize: 'w-20', flowerSize: 'w-11', opacity: 'opacity-70', flip: true, duration: 9 },
-  { top: '35%', left: '5%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-65', duration: 8.5 },
-  { top: '50%', right: '6%', padSize: 'w-16', flowerSize: 'w-9', opacity: 'opacity-60', flip: true, duration: 9.5 },
-  { top: '68%', left: '10%', padSize: 'w-18', flowerSize: 'w-10', opacity: 'opacity-65', duration: 7.8 },
-  { bottom: '6%', left: '42%', padSize: 'w-16', flowerSize: 'w-9', opacity: 'opacity-60', flip: true, duration: 8.8 },
+  { top: '4%',  left: '25%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-75', duration: 8 },
+  { top: '18%', right: '8%', padSize: 'w-26', flowerSize: 'w-15', opacity: 'opacity-70', flip: true, duration: 9 },
+  { top: '35%', left: '5%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-65', duration: 8.5 },
+  { top: '50%', right: '6%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 9.5 },
+  { top: '68%', left: '10%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-65', duration: 7.8 },
+  { bottom: '6%', left: '42%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 8.8 },
 ];
 
 interface IslandProps {
@@ -336,6 +336,7 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
 
       <SnakeModal
         isOpen={selectedSnake !== null}
+        snakeId={selectedSnake?.id}
         message={selectedSnake?.message ?? ''}
         onClose={() => setSelectedSnake(null)}
       />

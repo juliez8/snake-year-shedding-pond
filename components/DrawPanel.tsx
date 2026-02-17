@@ -78,7 +78,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
     : 'bg-amber-50/80 rounded-[1.25rem] shadow-[0_4px_20px_rgba(251,191,36,0.12),0_2px_6px_rgba(0,0,0,0.04)] w-full max-w-[340px] flex flex-col border border-amber-100/80';
 
   return (
-    <div className={`${outerStyles} ${compact ? 'p-4 pt-14 space-y-2' : 'p-5 space-y-3 h-full min-h-0 overflow-y-auto'}`}>
+    <div className={`${outerStyles} ${compact ? 'p-4 pt-14 space-y-2' : 'p-5 space-y-2'}`}>
 
       <h2 className={`font-medium text-amber-900/90 text-center tracking-wide ${compact ? 'text-base' : 'text-lg'}`}>
         Draw Your Snake
@@ -135,9 +135,6 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
           {error}
         </div>
       )}
-
-      {/* Spacer - only when not compact (desktop side panel) */}
-      {!compact && <div className="flex-1 min-h-2" />}
 
       {/* Submit button */}
       <button

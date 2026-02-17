@@ -63,6 +63,20 @@ CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON rate_limits(window_start);
 -- RLS: no anon access at all — only the service role key can read/write
 ALTER TABLE rate_limits ENABLE ROW LEVEL SECURITY;
 
+-- ============================================================
+-- Reports table (for community moderation)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS reports (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  snake_id UUID NOT NULL REFERENCES snake_segments(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_reports_snake_id ON reports(snake_id);
+
+-- RLS: no anon access — only service role can write
+ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
+
 -- Comments for documentation
 COMMENT ON TABLE snake_segments IS 'Stores snake drawings and messages for Shedding Island';
 COMMENT ON COLUMN snake_segments.drawing_data IS 'JSONB containing strokes array with colors and points';
