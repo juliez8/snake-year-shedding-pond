@@ -117,28 +117,44 @@ const desktopLotus: LotusEntry[] = [
   { top: '25%', left: '48%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-48', duration: 8.7 },
 ];
 
-/* ── Mobile: curated fewer decorations for vertical pond ── */
+/* ── Mobile: lush decorations matching desktop richness in vertical pond ── */
 const mobilePads: PadEntry[] = [
-  { top: '2%',  left: '5%',  size: 'w-14', opacity: 'opacity-50', duration: 9, rotate: -10 },
-  { top: '3%',  right: '10%', size: 'w-16', opacity: 'opacity-45', flip: true, duration: 10, rotate: 15 },
-  { top: '15%', left: '55%', size: 'w-12', opacity: 'opacity-40', duration: 10.5, rotate: 25 },
-  { top: '30%', left: '3%', size: 'w-14', opacity: 'opacity-40', flip: true, duration: 11, rotate: -20 },
-  { top: '45%', right: '5%', size: 'w-12', opacity: 'opacity-35', duration: 9.5, rotate: 30 },
-  { top: '55%', left: '8%', size: 'w-14', opacity: 'opacity-40', duration: 10.2, rotate: -15 },
-  { top: '70%', right: '8%', size: 'w-12', opacity: 'opacity-35', flip: true, duration: 9.8, rotate: 20 },
-  { bottom: '5%', left: '15%', size: 'w-14', opacity: 'opacity-45', duration: 10.8, rotate: 5 },
-  { bottom: '3%', right: '15%', size: 'w-12', opacity: 'opacity-40', flip: true, duration: 9.2, rotate: -25 },
-  { top: '38%', left: '40%', size: 'w-10', opacity: 'opacity-28', duration: 11.3, rotate: 40 },
-  { top: '60%', left: '50%', size: 'w-10', opacity: 'opacity-25', flip: true, duration: 10.5, rotate: -30 },
+  // Top edge
+  { top: '2%',  left: '5%',  size: 'w-20', opacity: 'opacity-55', duration: 9, rotate: -10 },
+  { top: '3%',  right: '8%', size: 'w-22', opacity: 'opacity-50', flip: true, duration: 10, rotate: 15 },
+  { top: '8%',  left: '45%', size: 'w-16', opacity: 'opacity-40', duration: 10.5, rotate: 25 },
+  // Upper-mid
+  { top: '18%', left: '3%', size: 'w-18', opacity: 'opacity-45', flip: true, duration: 11, rotate: -20 },
+  { top: '22%', right: '5%', size: 'w-16', opacity: 'opacity-40', duration: 9.5, rotate: 30 },
+  { top: '16%', left: '55%', size: 'w-14', opacity: 'opacity-35', duration: 10.8, rotate: 35 },
+  // Mid
+  { top: '35%', left: '5%', size: 'w-18', opacity: 'opacity-45', duration: 10.2, rotate: -15 },
+  { top: '38%', right: '6%', size: 'w-16', opacity: 'opacity-40', flip: true, duration: 9.8, rotate: 20 },
+  { top: '32%', left: '38%', size: 'w-14', opacity: 'opacity-32', duration: 11.3, rotate: 40 },
+  // Lower-mid
+  { top: '50%', right: '4%', size: 'w-18', opacity: 'opacity-45', duration: 9.2, rotate: -25 },
+  { top: '52%', left: '8%', size: 'w-16', opacity: 'opacity-40', flip: true, duration: 10.5, rotate: -30 },
+  { top: '48%', left: '48%', size: 'w-14', opacity: 'opacity-30', duration: 11, rotate: 55 },
+  // Lower
+  { top: '65%', left: '4%', size: 'w-20', opacity: 'opacity-50', duration: 9.5, rotate: 12 },
+  { top: '68%', right: '8%', size: 'w-16', opacity: 'opacity-40', flip: true, duration: 10.2, rotate: -18 },
+  { top: '62%', left: '42%', size: 'w-14', opacity: 'opacity-32', duration: 11.5, rotate: 28 },
+  // Bottom edge
+  { bottom: '4%', left: '10%', size: 'w-20', opacity: 'opacity-50', duration: 10.8, rotate: 5 },
+  { bottom: '3%', right: '12%', size: 'w-18', opacity: 'opacity-45', flip: true, duration: 9.2, rotate: -22 },
+  { bottom: '6%', left: '48%', size: 'w-14', opacity: 'opacity-35', duration: 10, rotate: 15 },
 ];
 
 const mobileLotus: LotusEntry[] = [
-  { top: '4%',  left: '25%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-75', duration: 8 },
-  { top: '18%', right: '8%', padSize: 'w-26', flowerSize: 'w-15', opacity: 'opacity-70', flip: true, duration: 9 },
-  { top: '35%', left: '5%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-65', duration: 8.5 },
-  { top: '50%', right: '6%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 9.5 },
-  { top: '68%', left: '10%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-65', duration: 7.8 },
-  { bottom: '6%', left: '42%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-60', flip: true, duration: 8.8 },
+  { top: '4%',  left: '22%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-80', duration: 8 },
+  { top: '12%', right: '5%', padSize: 'w-30', flowerSize: 'w-17', opacity: 'opacity-75', flip: true, duration: 9 },
+  { top: '26%', left: '4%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-70', duration: 8.5 },
+  { top: '38%', right: '4%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', flip: true, duration: 9.5 },
+  { top: '52%', left: '6%', padSize: 'w-28', flowerSize: 'w-16', opacity: 'opacity-70', duration: 7.8 },
+  { top: '58%', right: '5%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-60', flip: true, duration: 8.8 },
+  { top: '72%', left: '20%', padSize: 'w-26', flowerSize: 'w-14', opacity: 'opacity-65', duration: 9.2 },
+  { bottom: '5%', right: '18%', padSize: 'w-24', flowerSize: 'w-14', opacity: 'opacity-60', flip: true, duration: 8.2 },
+  { top: '42%', left: '35%', padSize: 'w-22', flowerSize: 'w-12', opacity: 'opacity-50', duration: 10 },
 ];
 
 interface IslandProps {
