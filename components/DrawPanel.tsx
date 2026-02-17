@@ -108,7 +108,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       <div className="flex justify-end">
         <button
           onClick={handleClear}
-          className="text-xs text-amber-700/70 hover:text-amber-800 underline decoration-amber-200 hover:decoration-amber-300 transition-colors"
+          className="text-sm text-amber-800 hover:text-amber-900 underline decoration-amber-300 hover:decoration-amber-400 transition-colors"
         >
           Clear
         </button>
@@ -125,13 +125,13 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         style={{ fontSize: '18px' }}
       />
 
-      <div className="text-right text-xs text-amber-600/70">
+      <div className="text-right text-sm text-amber-700">
         {message.length}/140
       </div>
 
       {/* Error message */}
       {error && (
-        <div className="text-rose-700 text-sm bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] flex-shrink-0">
+        <div className="text-rose-800 text-base bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] flex-shrink-0">
           {error}
         </div>
       )}
@@ -140,7 +140,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="w-full flex-shrink-0 py-3 bg-amber-400 text-amber-950 rounded-full hover:bg-amber-500 disabled:bg-amber-200 disabled:text-amber-600/70 disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium shadow-[0_2px_8px_rgba(251,191,36,0.25)] hover:shadow-[0_4px_12px_rgba(251,191,36,0.3)] active:scale-[0.99]"
+        className="w-full flex-shrink-0 py-3 bg-gradient-to-r from-amber-300 via-amber-200 to-yellow-200 text-amber-900 rounded-full hover:from-amber-400 hover:via-amber-300 hover:to-yellow-300 disabled:from-amber-100 disabled:via-amber-100 disabled:to-amber-100 disabled:text-amber-400 disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium shadow-[0_2px_10px_rgba(217,168,68,0.3)] hover:shadow-[0_4px_14px_rgba(217,168,68,0.4)] active:scale-[0.99]"
       >
         {isSubmitting ? 'Releasing...' : 'Release Snake'}
       </button>

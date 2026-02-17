@@ -69,6 +69,7 @@ ALTER TABLE rate_limits ENABLE ROW LEVEL SECURITY;
 CREATE TABLE IF NOT EXISTS reports (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   snake_id UUID NOT NULL REFERENCES snake_segments(id) ON DELETE CASCADE,
+  message TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

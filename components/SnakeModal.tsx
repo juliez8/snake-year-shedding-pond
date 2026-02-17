@@ -88,18 +88,22 @@ export default function SnakeModal({ isOpen, snakeId, message, onClose }: SnakeM
         </button>
 
         {snakeId && (
-          <div className="mt-4 flex justify-center">
+          <div className="mt-5 flex justify-center">
             <button
               onClick={handleReport}
               disabled={reported || reporting}
-              className="text-xs text-amber-600/50 hover:text-rose-400 disabled:hover:text-amber-600/50 transition-colors duration-200 flex items-center gap-1"
+              className={`text-sm px-4 py-1.5 rounded-full transition-all duration-200 ${
+                reported
+                  ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                  : 'text-amber-700 border border-amber-300 hover:border-rose-300 hover:text-rose-500 hover:bg-rose-50/50'
+              }`}
             >
               {reported ? (
-                <span>Thanks for reporting 💛</span>
+                'Thanks for reporting 💛'
               ) : reporting ? (
-                <span>Reporting...</span>
+                'Reporting...'
               ) : (
-                <span>🚩 Report this snake</span>
+                '🚩 Report'
               )}
             </button>
           </div>

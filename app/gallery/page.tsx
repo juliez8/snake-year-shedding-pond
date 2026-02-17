@@ -43,16 +43,16 @@ export default async function GalleryPage() {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
           <div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-amber-900">SNAKE GALLERY</h1>
-            <p className="text-amber-800/80 font-semibold text-base sm:text-lg lg:text-xl mt-1">
+            <p className="text-amber-900 font-semibold text-base sm:text-lg lg:text-xl mt-1">
               {totalCount.toLocaleString()} TOTAL SNAKES
             </p>
-            <p className="text-amber-700/60 text-sm sm:text-base lg:text-lg mt-2 max-w-lg">
+            <p className="text-amber-800/80 text-sm sm:text-base lg:text-lg mt-2 max-w-lg">
               Tap any snake to read what was released.
             </p>
           </div>
           <a
             href="/"
-            className="shrink-0 px-4 py-2 border-2 border-amber-800 text-amber-900 rounded-lg font-semibold hover:bg-amber-100 transition-colors text-sm sm:text-base self-start"
+            className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-red-900 via-red-800 to-rose-700 text-amber-50 rounded-xl font-medium shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:from-red-950 hover:via-red-900 hover:to-rose-800 transition-all duration-200 text-sm sm:text-base self-start"
           >
             ← BACK TO ISLAND
           </a>

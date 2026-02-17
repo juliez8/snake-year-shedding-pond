@@ -57,13 +57,13 @@ export default function HomePage() {
                 <div className="flex justify-center gap-3 mt-1.5">
                   <button
                     onClick={() => setShowModal(true)}
-                    className="px-5 py-2.5 bg-amber-400 text-amber-950 rounded-xl font-medium text-sm shadow-[0_0_12px_rgba(251,191,36,0.5),0_2px_8px_rgba(251,191,36,0.35)] hover:shadow-[0_0_18px_rgba(251,191,36,0.6),0_4px_12px_rgba(251,191,36,0.4)] hover:bg-amber-500 transition-all duration-200"
+                    className="px-5 py-2.5 bg-gradient-to-r from-amber-300 via-amber-200 to-yellow-200 text-amber-900 rounded-xl font-medium text-sm shadow-[0_0_12px_rgba(217,168,68,0.4),0_2px_8px_rgba(217,168,68,0.3)] hover:shadow-[0_0_18px_rgba(217,168,68,0.5),0_4px_12px_rgba(217,168,68,0.4)] hover:from-amber-400 hover:via-amber-300 hover:to-yellow-300 transition-all duration-200"
                   >
                     Draw a Snake
                   </button>
                   <a
                     href="/gallery"
-                    className="px-5 py-2.5 bg-red-900 text-amber-50 rounded-xl font-medium text-sm shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200"
+                    className="px-5 py-2.5 bg-gradient-to-r from-red-900 via-red-800 to-rose-700 text-amber-50 rounded-xl font-medium text-sm shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:from-red-950 hover:via-red-900 hover:to-rose-800 transition-all duration-200"
                   >
                     Visit Gallery
                   </a>
@@ -74,7 +74,7 @@ export default function HomePage() {
             {!isMobile && (
               <a
                 href="/gallery"
-                className="shrink-0 px-6 py-3 bg-red-900 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:bg-red-950 transition-all duration-200 self-center sm:self-start"
+                className="shrink-0 px-6 py-3 bg-gradient-to-r from-red-900 via-red-800 to-rose-700 text-amber-50 rounded-xl font-medium text-base shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:from-red-950 hover:via-red-900 hover:to-rose-800 transition-all duration-200 self-center sm:self-start"
               >
                 Visit Gallery
               </a>

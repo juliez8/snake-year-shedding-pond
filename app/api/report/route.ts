@@ -11,10 +11,10 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseClient();
 
-    // Check if this snake exists
+    // Fetch the snake so we can store its message for easy reference
     const { data: snake } = await supabase
       .from('snake_segments')
-      .select('id')
+      .select('id, message')
       .eq('id', snake_id)
       .single();
 
@@ -22,11 +22,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Snake not found.' }, { status: 404 });
     }
 
-    // Insert report (duplicates are fine — more reports = more urgency)
+    // Insert report with message for easy review
     const { error } = await supabase
       .from('reports')
       .insert({
         snake_id,
+        message: snake.message,
       });
 
     if (error) {
