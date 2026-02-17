@@ -1,20 +1,5 @@
-import { Redis } from '@upstash/redis';
-
-let redis: Redis | null = null;
-
-function getRedis(): Redis {
-  if (!redis) {
-    const url = process.env.UPSTASH_REDIS_REST_URL;
-    const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-
-    if (!url || !token) {
-      throw new Error('Redis configuration missing');
-    }
-
-    redis = new Redis({ url, token });
-  }
-  return redis;
-}
+import { createHash } from 'crypto';
+import { getSupabaseClient } from '@/lib/supabase';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const MAX_REQUESTS = isDev ? 50 : 60;
@@ -27,48 +12,87 @@ export interface RateLimitResult {
 }
 
 /**
- * Atomic rate limiting using Redis INCR + EXPIRE.
- * Uses a single INCR which is atomic — no race condition between check and increment.
- * Fails CLOSED: if Redis is unreachable, requests are denied (safe default for production).
+ * Hash IP addresses before storing — never store raw IPs in the database.
+ */
+function hashIp(ip: string): string {
+  return createHash('sha256').update(ip).digest('hex').slice(0, 32);
+}
+
+/**
+ * Rate limiting using Supabase (PostgreSQL).
+ * Uses a rate_limits table to track request counts per IP within a sliding window.
+ * Fails CLOSED in production, OPEN in development.
  */
 export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
-  const key = `ratelimit:${ip}`;
-
   try {
-    const client = getRedis();
+    const supabase = getSupabaseClient();
+    const ipHash = hashIp(ip);
+    const now = new Date();
+    const windowCutoff = new Date(now.getTime() - WINDOW_SECONDS * 1000);
 
-    // INCR is atomic — if key doesn't exist, it creates it with value 1
-    const current = await client.incr(key);
+    // Clean up expired entries (keeps the table small)
+    await supabase
+      .from('rate_limits')
+      .delete()
+      .lt('window_start', windowCutoff.toISOString());
 
-    // If this is the first request (INCR created the key), set the TTL
-    if (current === 1) {
-      await client.expire(key, WINDOW_SECONDS);
-    }
+    // Get current rate limit entry for this IP
+    const { data } = await supabase
+      .from('rate_limits')
+      .select('request_count, window_start')
+      .eq('ip_hash', ipHash)
+      .single();
 
-    // Get TTL for reset time
-    const ttl = await client.ttl(key);
-    const resetInSeconds = ttl > 0 ? ttl : WINDOW_SECONDS;
+    // No entry or window expired — start fresh
+    if (!data || new Date(data.window_start) < windowCutoff) {
+      await supabase
+        .from('rate_limits')
+        .upsert({
+          ip_hash: ipHash,
+          request_count: 1,
+          window_start: now.toISOString(),
+        });
 
-    if (current > MAX_REQUESTS) {
       return {
-        limited: true,
-        remaining: 0,
-        resetInSeconds,
+        limited: false,
+        remaining: MAX_REQUESTS - 1,
+        resetInSeconds: WINDOW_SECONDS,
       };
     }
 
+    // Over limit
+    if (data.request_count >= MAX_REQUESTS) {
+      const resetIn = Math.ceil(
+        (new Date(data.window_start).getTime() + WINDOW_SECONDS * 1000 - now.getTime()) / 1000
+      );
+      return {
+        limited: true,
+        remaining: 0,
+        resetInSeconds: Math.max(1, resetIn),
+      };
+    }
+
+    // Under limit — increment
+    await supabase
+      .from('rate_limits')
+      .update({ request_count: data.request_count + 1 })
+      .eq('ip_hash', ipHash);
+
+    const resetIn = Math.ceil(
+      (new Date(data.window_start).getTime() + WINDOW_SECONDS * 1000 - now.getTime()) / 1000
+    );
+
     return {
       limited: false,
-      remaining: Math.max(0, MAX_REQUESTS - current),
-      resetInSeconds,
+      remaining: Math.max(0, MAX_REQUESTS - data.request_count - 1),
+      resetInSeconds: Math.max(1, resetIn),
     };
   } catch (error) {
     console.error('Rate limit check failed:', error);
     if (isDev) {
-      // Fail OPEN in development so you can test freely
       return { limited: false, remaining: MAX_REQUESTS, resetInSeconds: WINDOW_SECONDS };
     }
-    // Fail CLOSED in production — deny request if Redis is unavailable
+    // Fail CLOSED in production
     return { limited: true, remaining: 0, resetInSeconds: 60 };
   }
 }
