@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit reports to prevent spam
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded?.split(',')[0].trim() ?? request.headers.get('x-real-ip') ?? 'unknown';
+    const rateResult = await checkRateLimit(`report:${ip}`);
+    if (rateResult.limited) {
+      return NextResponse.json({ error: 'Too many reports.' }, { status: 429 });
+    }
+
     const { snake_id } = await request.json();
 
     if (!snake_id || typeof snake_id !== 'string') {
