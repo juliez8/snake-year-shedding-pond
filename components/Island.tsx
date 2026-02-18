@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Snake } from '@/types/snake';
 import { calculateOpacityIsland } from '@/lib/fade';
 import SnakeDisplay from './SnakeDisplay';
 import SnakeModal from './SnakeModal';
 
-const SHED_DURATION_MS = 10_000;
+const SHED_DURATION_MS = 8_000;
 
 /* ── Pink lotus flower with yellow centre ── */
 function LotusFlowerSVG({ className, style }: { className?: string; style?: React.CSSProperties }) {
@@ -167,6 +167,17 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
   const [selectedSnake, setSelectedSnake] = useState<Snake | null>(null);
   const [opacities, setOpacities] = useState<Record<string, number>>({});
   const [isMobile, setIsMobile] = useState(false);
+  const [entryAnimatingId, setEntryAnimatingId] = useState<string | null>(null);
+  const onCompleteRef = useRef(onEntryAnimationComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onEntryAnimationComplete;
+  }, [onEntryAnimationComplete]);
+
+  // Track which snake is doing the CSS entry animation (separate from the fade timer)
+  useEffect(() => {
+    if (lastAddedSnakeId) setEntryAnimatingId(lastAddedSnakeId);
+  }, [lastAddedSnakeId]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -189,7 +200,7 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     return () => clearInterval(interval);
   }, [snakes]);
 
-  // When the user's newly added snake finishes shedding (10s), auto-open the modal
+  // When the user's newly added snake finishes shedding (8s), auto-open the modal
   useEffect(() => {
     if (!lastAddedSnakeId) return;
     const snake = snakes.find((s) => s.id === lastAddedSnakeId);
@@ -201,11 +212,11 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
 
     const timer = setTimeout(() => {
       setSelectedSnake(snake);
-      onEntryAnimationComplete?.();
+      onCompleteRef.current?.();
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [lastAddedSnakeId, snakes, onEntryAnimationComplete]);
+  }, [lastAddedSnakeId, snakes]);
 
   return (
     <>
@@ -322,13 +333,13 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
               >
                 <div
                   className={
-                    lastAddedSnakeId === snake.id
+                    entryAnimatingId === snake.id
                       ? 'animate-snakeEntry'
                       : 'hover:animate-wiggle'
                   }
                   onAnimationEnd={() => {
-                    if (lastAddedSnakeId === snake.id) {
-                      onEntryAnimationComplete?.();
+                    if (entryAnimatingId === snake.id) {
+                      setEntryAnimatingId(null);
                     }
                   }}
                 >

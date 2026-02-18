@@ -2,14 +2,14 @@
 const ISLAND_MIN_OPACITY = 0.25;
 
 /**
- * Calculate opacity for island snakes - fades over 10 seconds for instant gratification
+ * Calculate opacity for island snakes - fades over 8 seconds for instant gratification
  */
 export function calculateOpacityIsland(createdAt: string): number {
   const createdTime = new Date(createdAt).getTime();
   const now = Date.now();
   const secondsPassed = (now - createdTime) / 1000;
 
-  const fadeSeconds = 10;
+  const fadeSeconds = 8;
   if (secondsPassed >= fadeSeconds) return ISLAND_MIN_OPACITY;
 
   const progress = secondsPassed / fadeSeconds;
