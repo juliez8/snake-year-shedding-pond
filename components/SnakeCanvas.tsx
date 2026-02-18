@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { Stroke, Point, DrawingData } from '@/types/snake';
 
 interface SnakeCanvasProps {
@@ -24,9 +24,13 @@ export default function SnakeCanvas({
 }: SnakeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
-  const [currentStroke, setCurrentStroke] = useState<Point[]>([]);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const isDrawingRef = useRef(false);
   const currentStrokeRef = useRef<Point[]>([]);
+  const selectedColorRef = useRef(selectedColor);
+
+  useEffect(() => {
+    selectedColorRef.current = selectedColor;
+  }, [selectedColor]);
 
   // Setup canvas with proper DPI scaling for crisp rendering
   useEffect(() => {
@@ -38,18 +42,13 @@ export default function SnakeCanvas({
 
     const dpr = window.devicePixelRatio || 1;
 
-    // Set actual canvas size (with DPI scaling)
     canvas.width = width * dpr;
     canvas.height = height * dpr;
 
-    // Set display size (CSS pixels)
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    // Scale context to match DPI
     ctx.scale(dpr, dpr);
-
-    // Set rendering quality
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
   }, [width, height]);
@@ -58,7 +57,8 @@ export default function SnakeCanvas({
   useEffect(() => {
     if (clearTrigger > 0) {
       setStrokes([]);
-      setCurrentStroke([]);
+      currentStrokeRef.current = [];
+      isDrawingRef.current = false;
       const canvas = canvasRef.current;
       if (canvas) {
         const ctx = canvas.getContext('2d');
@@ -82,10 +82,8 @@ export default function SnakeCanvas({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear canvas
     ctx.clearRect(0, 0, width, height);
 
-    // Draw all strokes
     strokes.forEach((stroke) => {
       if (stroke.points.length < 2) return;
 
@@ -105,39 +103,108 @@ export default function SnakeCanvas({
     });
   }, [strokes, width, height]);
 
-  // Get coordinates in canvas space - account for visual viewport on mobile
-  const getPoint = (clientX: number, clientY: number): Point | null => {
+  const getPoint = useCallback((clientX: number, clientY: number): Point | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
 
     const rect = canvas.getBoundingClientRect();
-    const vv = typeof window !== 'undefined' && window.visualViewport;
-    const offsetX = vv ? vv.offsetLeft : 0;
-    const offsetY = vv ? vv.offsetTop : 0;
     const scaleX = width / rect.width;
     const scaleY = height / rect.height;
 
-    const x = (clientX + offsetX - rect.left) * scaleX;
-    const y = (clientY + offsetY - rect.top) * scaleY;
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
 
     return { x, y };
-  };
+  }, [width, height]);
 
+  // Use native touch events for reliable mobile drawing
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const point = getPoint(touch.clientX, touch.clientY);
+      if (!point) return;
+
+      isDrawingRef.current = true;
+      currentStrokeRef.current = [point];
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      if (!isDrawingRef.current) return;
+
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const point = getPoint(touch.clientX, touch.clientY);
+      if (!point) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const pts = currentStrokeRef.current;
+      const last = pts[pts.length - 1];
+
+      ctx.strokeStyle = selectedColorRef.current;
+      ctx.lineWidth = BRUSH_WIDTH;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.beginPath();
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+
+      currentStrokeRef.current = [...pts, point];
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
+      if (!isDrawingRef.current) return;
+
+      const pts = currentStrokeRef.current;
+      if (pts.length >= 1) {
+        const points = pts.length >= 2 ? [...pts] : [pts[0], { ...pts[0] }];
+        setStrokes((prev) => [...prev, { color: selectedColorRef.current, points }]);
+      }
+      currentStrokeRef.current = [];
+      isDrawingRef.current = false;
+    };
+
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+
+    return () => {
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+      canvas.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, [getPoint]);
+
+  // Mouse/pointer events for desktop
   const start = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return; // handled by touch events above
     e.preventDefault();
     const point = getPoint(e.clientX, e.clientY);
     if (!point) return;
 
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
-    const pts = [point];
-    currentStrokeRef.current = pts;
-    setIsDrawing(true);
-    setCurrentStroke(pts);
+    isDrawingRef.current = true;
+    currentStrokeRef.current = [point];
   };
 
   const move = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return;
     e.preventDefault();
-    if (!isDrawing) return;
+    if (!isDrawingRef.current) return;
 
     const point = getPoint(e.clientX, e.clientY);
     if (!point) return;
@@ -148,7 +215,8 @@ export default function SnakeCanvas({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const last = currentStroke[currentStroke.length - 1];
+    const pts = currentStrokeRef.current;
+    const last = pts[pts.length - 1];
 
     ctx.strokeStyle = selectedColor;
     ctx.lineWidth = BRUSH_WIDTH;
@@ -160,22 +228,21 @@ export default function SnakeCanvas({
     ctx.lineTo(point.x, point.y);
     ctx.stroke();
 
-    const updated = [...currentStrokeRef.current, point];
-    currentStrokeRef.current = updated;
-    setCurrentStroke(updated);
+    currentStrokeRef.current = [...pts, point];
   };
 
   const stop = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return;
     e.preventDefault();
+    if (!isDrawingRef.current) return;
+
     const pts = currentStrokeRef.current;
     if (pts.length >= 1) {
-      const points =
-        pts.length >= 2 ? [...pts] : [pts[0], { ...pts[0] }];
+      const points = pts.length >= 2 ? [...pts] : [pts[0], { ...pts[0] }];
       setStrokes((prev) => [...prev, { color: selectedColor, points }]);
     }
     currentStrokeRef.current = [];
-    setIsDrawing(false);
-    setCurrentStroke([]);
+    isDrawingRef.current = false;
   };
 
   return (
