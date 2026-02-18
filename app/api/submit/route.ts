@@ -6,8 +6,8 @@ import { SnakeSubmission } from '@/types/snake';
 import { generateRandomPosition } from '@/lib/positions';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rateLimit';
 
-const MIGRATE_BATCH_SIZE = 3;
-const MAX_MIGRATE_ATTEMPTS = 5;
+const MIGRATE_BATCH_SIZE = 1;
+const MAX_MIGRATE_ATTEMPTS = 3;
 const MAX_BODY_SIZE = 512 * 1024; // 512 KB — generous for drawing data, blocks abuse
 
 export async function POST(request: NextRequest) {
