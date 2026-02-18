@@ -1,3 +1,7 @@
+/**
+ * Snake message modal.
+ * Shows the \"you have shed\" text and allows reporting a snake.
+ */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -13,7 +17,6 @@ export default function SnakeModal({ isOpen, snakeId, message, onClose }: SnakeM
   const [reported, setReported] = useState(false);
   const [reporting, setReporting] = useState(false);
 
-  // Reset report state when modal opens/closes
   useEffect(() => {
     if (!isOpen) {
       setReported(false);
@@ -21,7 +24,6 @@ export default function SnakeModal({ isOpen, snakeId, message, onClose }: SnakeM
     }
   }, [isOpen]);
 
-  // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -53,7 +55,7 @@ export default function SnakeModal({ isOpen, snakeId, message, onClose }: SnakeM
         setReported(true);
       }
     } catch {
-      // Silently fail — not critical
+      /* ignore */
     }
     setReporting(false);
   };

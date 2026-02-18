@@ -1,3 +1,8 @@
+/**
+ * Per-IP rate limiting backed by Supabase.
+ * Stores hashed IPs and request windows in the rate_limits table.
+ * Fails closed in production if checks break.
+ */
 import { createHash } from 'crypto';
 import { getSupabaseClient } from '@/lib/supabase';
 
@@ -11,18 +16,11 @@ export interface RateLimitResult {
   resetInSeconds: number;
 }
 
-/**
- * Hash IP addresses before storing — never store raw IPs in the database.
- */
 function hashIp(ip: string): string {
   return createHash('sha256').update(ip).digest('hex').slice(0, 32);
 }
 
-/**
- * Rate limiting using Supabase (PostgreSQL).
- * Uses a rate_limits table to track request counts per IP within a sliding window.
- * Fails CLOSED in production, OPEN in development.
- */
+/** Check and update rate limit state for a given IP (hashed). */
 export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   try {
     const supabase = getSupabaseClient();
@@ -97,9 +95,7 @@ export async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   }
 }
 
-/**
- * Build standard rate limit headers for the response.
- */
+/** Build standard rate limit headers for responses. */
 export function rateLimitHeaders(result: RateLimitResult): Record<string, string> {
   return {
     'X-RateLimit-Limit': String(MAX_REQUESTS),

@@ -1,3 +1,7 @@
+/**
+ * Canvas-based snake drawing component.
+ * Collects strokes from pointer + touch input and reports DrawingData upstream.
+ */
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
@@ -32,7 +36,6 @@ export default function SnakeCanvas({
     selectedColorRef.current = selectedColor;
   }, [selectedColor]);
 
-  // Setup canvas with proper DPI scaling for crisp rendering
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -53,7 +56,6 @@ export default function SnakeCanvas({
     ctx.imageSmoothingQuality = 'high';
   }, [width, height]);
 
-  // Clear canvas
   useEffect(() => {
     if (clearTrigger > 0) {
       setStrokes([]);
@@ -69,12 +71,10 @@ export default function SnakeCanvas({
     }
   }, [clearTrigger, width, height]);
 
-  // Notify parent of drawing changes
   useEffect(() => {
     onDrawingChange({ strokes, width, height });
   }, [strokes, width, height, onDrawingChange]);
 
-  // Redraw all strokes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -117,7 +117,6 @@ export default function SnakeCanvas({
     return { x, y };
   }, [width, height]);
 
-  // Use native touch events for reliable mobile drawing
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -189,9 +188,8 @@ export default function SnakeCanvas({
     };
   }, [getPoint]);
 
-  // Mouse/pointer events for desktop
   const start = (e: React.PointerEvent) => {
-    if (e.pointerType === 'touch') return; // handled by touch events above
+    if (e.pointerType === 'touch') return;
     e.preventDefault();
     const point = getPoint(e.clientX, e.clientY);
     if (!point) return;

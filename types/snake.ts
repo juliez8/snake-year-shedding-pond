@@ -1,4 +1,6 @@
-// Core data types for snake drawings
+/**
+ * Core drawing and snake types shared between client and server.
+ */
 
 export interface Point {
   x: number;

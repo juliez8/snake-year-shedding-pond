@@ -1,3 +1,7 @@
+/**
+ * Gallery page (server component).
+ * Renders the first page of gallery snakes and passes data to GalleryClient.
+ */
 import { getSupabaseClient } from '@/lib/supabase';
 import { Snake } from '@/types/snake';
 import GalleryClient from './GalleryClient';

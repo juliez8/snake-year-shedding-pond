@@ -1,3 +1,7 @@
+/**
+ * Read-only snake renderer.
+ * Scales saved DrawingData into a fixed-size canvas with optional opacity.
+ */
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -31,37 +35,22 @@ export default function SnakeDisplay({
 
     const dpr = window.devicePixelRatio || 1;
 
-    // Set actual canvas size (with DPI scaling for crisp rendering)
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-
-    // Set display size (CSS pixels)
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
-
-    // Scale context to match DPI
     ctx.scale(dpr, dpr);
-
-    // Clear canvas
     ctx.clearRect(0, 0, width, height);
-
-    // Set global alpha for fading effect
     ctx.globalAlpha = opacity;
-
-    // Enable high quality rendering
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // Calculate scale to fit original drawing into display size
     const scaleX = width / drawing.width;
     const scaleY = height / drawing.height;
     const scale = Math.min(scaleX, scaleY);
-
-    // Center the drawing
     const offsetX = (width - drawing.width * scale) / 2;
     const offsetY = (height - drawing.height * scale) / 2;
 
-    // Draw all strokes with scaling
     drawing.strokes.forEach((stroke) => {
       if (stroke.points.length < 2) return;
 
@@ -86,7 +75,6 @@ export default function SnakeDisplay({
       ctx.stroke();
     });
 
-    // Reset global alpha
     ctx.globalAlpha = 1;
   }, [drawing, opacity, width, height]);
 

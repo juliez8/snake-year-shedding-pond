@@ -1,9 +1,11 @@
+/**
+ * Random, non-overlapping pond position generator.
+ */
 export type Position = {
   position_x: number;
   position_y: number;
 };
 
-// Snakes render at ~150x90px; MIN_DISTANCE keeps centers far enough apart to avoid visual overlap
 const MIN_DISTANCE = 0.18;
 const MAX_ATTEMPTS = 200;
 
@@ -16,6 +18,7 @@ function distance(
   return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 }
 
+/** True if (x, y) is closer than MIN_DISTANCE to any existing snake. */
 export function overlapsExisting(
   x: number,
   y: number,
@@ -26,6 +29,10 @@ export function overlapsExisting(
   );
 }
 
+/**
+ * Pick a random pond position that avoids overlap with existing snakes.
+ * Returns found: false if no valid spot after MAX_ATTEMPTS.
+ */
 export function generateRandomPosition(
   existingSnakes: Position[]
 ): { x: number; y: number; found: boolean } {

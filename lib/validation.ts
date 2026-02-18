@@ -1,3 +1,6 @@
+/**
+ * Input validation helpers for drawing data and messages.
+ */
 import { DrawingData } from '@/types/snake';
 
 interface ValidationResult {
@@ -10,7 +13,6 @@ const MAX_TOTAL_POINTS = 20000;
 const MAX_CANVAS_DIMENSION = 1000;
 const MAX_MESSAGE_LENGTH = 140;
 
-// Only allow valid hex color codes (3, 4, 6, or 8 digit)
 const HEX_COLOR_REGEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
 /**
@@ -24,6 +26,7 @@ function isFiniteInRange(value: unknown, min: number, max: number): boolean {
  * Deeply validate snake drawing geometry and data integrity.
  * Prevents malicious payloads, non-numeric coordinates, and unsafe color strings.
  */
+/** Validate drawing payload for a single snake. */
 export function validateSnakeGeometry(drawing: DrawingData): ValidationResult {
   if (!drawing || typeof drawing !== 'object') {
     return { valid: false, error: 'Invalid drawing data.' };
@@ -90,6 +93,7 @@ export function validateSnakeGeometry(drawing: DrawingData): ValidationResult {
  * Strips control characters, zero-width characters, and excessive whitespace.
  * Returns the cleaned message or an error.
  */
+/** Clean and validate the free-text message body. */
 export function sanitizeMessage(raw: unknown): { message: string } | { error: string } {
   if (!raw || typeof raw !== 'string') {
     return { error: 'Message is required.' };

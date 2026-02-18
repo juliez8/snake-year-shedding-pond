@@ -1,3 +1,7 @@
+/**
+ * Root layout for the app.
+ * Sets global font, background, and metadata for SEO/social previews.
+ */
 import type { Metadata } from 'next';
 import { Long_Cang } from 'next/font/google';
 import './globals.css';

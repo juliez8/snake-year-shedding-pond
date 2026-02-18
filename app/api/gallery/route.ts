@@ -4,10 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 const PAGE_SIZE = 60;
 const MAX_PAGE_SIZE = 120;
 
-/**
- * GET /api/gallery?page=1&limit=60
- * Paginated gallery endpoint for scalable snake loading.
- */
+/** GET /api/gallery?page&limit — paginated gallery snakes. */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
@@ -22,7 +19,6 @@ export async function GET(request: NextRequest) {
 
     const supabase = getSupabaseClient();
 
-    // Fetch one extra to determine if there are more pages
     const { data, error } = await supabase
       .from('snake_segments')
       .select('*')
@@ -38,7 +34,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get total count for pagination metadata
     const { count } = await supabase
       .from('snake_segments')
       .select('*', { count: 'exact', head: true })

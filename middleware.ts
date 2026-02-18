@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 /**
- * Global middleware for security enforcement.
- * Runs on every matched request before it reaches the route handler.
+ * Global middleware for basic API hardening.
+ * Enforces a max content-length and restricts allowed HTTP methods on /api routes.
  */
+import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 

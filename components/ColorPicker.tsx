@@ -1,3 +1,6 @@
+/**
+ * Discrete color picker for snake strokes.
+ */
 'use client';
 
 interface ColorPickerProps {

@@ -1,3 +1,7 @@
+/**
+ * Island (pond) visualization.
+ * Clips a blob-shaped pond, layers water + decorations, and places snakes with fading.
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -158,8 +162,11 @@ const mobileLotus: LotusEntry[] = [
 ];
 
 interface IslandProps {
+  /** Snakes currently rendered in the pond (location is respected by caller). */
   snakes: Snake[];
+  /** ID of most recently-added snake, used to trigger entry + auto-popup flow. */
   lastAddedSnakeId?: string | null;
+  /** Called when the auto-popup flow for the last added snake has completed. */
   onEntryAnimationComplete?: () => void;
 }
 
@@ -174,7 +181,6 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     onCompleteRef.current = onEntryAnimationComplete;
   }, [onEntryAnimationComplete]);
 
-  // Track which snake is doing the CSS entry animation (separate from the fade timer)
   useEffect(() => {
     if (lastAddedSnakeId) setEntryAnimatingId(lastAddedSnakeId);
   }, [lastAddedSnakeId]);
@@ -200,7 +206,6 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
     return () => clearInterval(interval);
   }, [snakes]);
 
-  // When the user's newly added snake finishes shedding (8s), auto-open the modal
   useEffect(() => {
     if (!lastAddedSnakeId) return;
     const snake = snakes.find((s) => s.id === lastAddedSnakeId);
@@ -220,7 +225,6 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
 
   return (
     <>
-      {/* Outer wrapper — padding prevents top/edge cutoff; filter gives organic shadow */}
       <div
         className="relative w-full max-w-4xl mx-auto py-1 sm:py-4 overflow-visible"
         style={{ filter: isMobile

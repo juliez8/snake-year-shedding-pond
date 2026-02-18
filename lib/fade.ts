@@ -1,9 +1,9 @@
-/** Minimum opacity for island snakes (faded but still visible) */
+/**
+ * Simple time-based opacity helper for island snakes.
+ * Uses created_at to compute a linear fade to ISLAND_MIN_OPACITY.
+ */
 const ISLAND_MIN_OPACITY = 0.25;
 
-/**
- * Calculate opacity for island snakes - fades over 8 seconds for instant gratification
- */
 export function calculateOpacityIsland(createdAt: string): number {
   const createdTime = new Date(createdAt).getTime();
   const now = Date.now();

@@ -1,10 +1,13 @@
+/**
+ * Report API.
+ * Records user reports for a given snake_id in the reports table.
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 import { checkRateLimit } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit reports to prevent spam
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded?.split(',')[0].trim() ?? request.headers.get('x-real-ip') ?? 'unknown';
     const rateResult = await checkRateLimit(`report:${ip}`);
@@ -20,7 +23,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseClient();
 
-    // Fetch the snake so we can store its message for easy reference
     const { data: snake } = await supabase
       .from('snake_segments')
       .select('id, message')
@@ -31,7 +33,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Snake not found.' }, { status: 404 });
     }
 
-    // Insert report with message for easy review
     const { error } = await supabase
       .from('reports')
       .insert({

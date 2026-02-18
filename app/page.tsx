@@ -1,3 +1,7 @@
+/**
+ * Home page (pond view).
+ * Fetches island snakes and renders the pond + drawing panel.
+ */
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -12,7 +16,6 @@ export default function HomePage() {
   const [showModal, setShowModal] = useState(false);
   const [lastAddedSnakeId, setLastAddedSnakeId] = useState<string | null>(null);
 
-  // Responsive breakpoint
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -23,7 +26,6 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Fetch snakes
   const fetchSnakes = useCallback(async () => {
     const { data } = await supabase
       .from('snake_segments')

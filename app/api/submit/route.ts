@@ -1,3 +1,8 @@
+/**
+ * Snake submission API route.
+ * Validates drawing + message, enforces rate limiting,
+ * chooses a non-overlapping pond position, and inserts into Supabase.
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 import { validateSnakeGeometry, sanitizeMessage } from '@/lib/validation';
@@ -8,15 +13,15 @@ import { checkRateLimit, rateLimitHeaders } from '@/lib/rateLimit';
 
 const MIGRATE_BATCH_SIZE = 1;
 const MAX_MIGRATE_ATTEMPTS = 3;
-const MAX_BODY_SIZE = 512 * 1024; // 512 KB — generous for drawing data, blocks abuse
+const MAX_BODY_SIZE = 512 * 1024;
 
+/** POST /api/submit */
 export async function POST(request: NextRequest) {
   try {
-    // --- IP extraction (works behind Vercel/Cloudflare proxies) ---
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded?.split(',')[0].trim() ?? request.headers.get('x-real-ip') ?? 'unknown';
 
-    // --- Rate limiting (atomic, fail-closed) ---
+    // Rate limit by IP
     const rateResult = await checkRateLimit(ip);
     const rlHeaders = rateLimitHeaders(rateResult);
 
@@ -27,7 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // --- Request body size check ---
+    // Enforce max body size (guardrail against oversized payloads)
     const contentLength = request.headers.get('content-length');
     if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
       return NextResponse.json(
@@ -36,7 +41,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Read body as text first to enforce size limit even without content-length
+    // Parse body as text so we can enforce size even without content-length
     const rawBody = await request.text();
     if (rawBody.length > MAX_BODY_SIZE) {
       return NextResponse.json(
@@ -45,6 +50,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Parse JSON body
     let body: SnakeSubmission;
     try {
       body = JSON.parse(rawBody);
@@ -57,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     const { drawing_data, message } = body;
 
-    // --- Validate and sanitize message ---
+    // Sanitize + validate message
     const messageResult = sanitizeMessage(message);
     if ('error' in messageResult) {
       return NextResponse.json(
@@ -67,7 +73,7 @@ export async function POST(request: NextRequest) {
     }
     const cleanMessage = messageResult.message;
 
-    // --- Content moderation ---
+    // Moderation filter
     const moderationError = moderateMessage(cleanMessage);
     if (moderationError) {
       return NextResponse.json(
@@ -76,7 +82,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // --- Validate drawing data (deep validation: colors, coordinates, structure) ---
+    // Validate drawing geometry structure
     if (!drawing_data || typeof drawing_data !== 'object') {
       return NextResponse.json(
         { error: 'Drawing data is required.' },
@@ -92,9 +98,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // --- Find position on island ---
     const supabase = getSupabaseClient();
 
+    // Find island position, migrating oldest snakes if needed when full
     let existing: { position_x: number; position_y: number }[] = [];
     const { data: existingData } = await supabase
       .from('snake_segments')
@@ -130,7 +136,7 @@ export async function POST(request: NextRequest) {
     const location = position.found ? 'island' : 'gallery';
     const insertPosition = position.found ? position : { x: 0.5, y: 0.5 };
 
-    // --- Insert snake (only store validated/sanitized data) ---
+    // Insert sanitized snake payload
     const { data, error } = await supabase
       .from('snake_segments')
       .insert({

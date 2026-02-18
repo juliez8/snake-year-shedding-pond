@@ -1,3 +1,7 @@
+/**
+ * Bulk migration API for Vercel Cron.
+ * Requires Bearer CRON_SECRET; moves oldest island snakes to gallery when over capacity.
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
 
@@ -6,7 +10,6 @@ const MIGRATION_BATCH_SIZE = 20;
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify the request is authorized via a shared secret (e.g. Vercel Cron)
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;
 
@@ -15,7 +18,6 @@ export async function POST(request: NextRequest) {
     }
     const supabase = getSupabaseClient();
 
-    // Count current island snakes
     const { count, error: countError } = await supabase
       .from('snake_segments')
       .select('*', { count: 'exact', head: true })
@@ -29,7 +31,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If under capacity, no migration needed
     if (!count || count <= MAX_ISLAND_CAPACITY) {
       return NextResponse.json({ 
         migrated: false, 
@@ -38,7 +39,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Get oldest snakes to migrate
     const { data: oldestSnakes, error: fetchError } = await supabase
       .from('snake_segments')
       .select('id')
@@ -61,7 +61,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Update location to gallery
     const ids = oldestSnakes.map(snake => snake.id);
     const { error: updateError } = await supabase
       .from('snake_segments')

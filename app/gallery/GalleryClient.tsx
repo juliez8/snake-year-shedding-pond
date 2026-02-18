@@ -1,3 +1,6 @@
+/**
+ * Client-side gallery grid with \"Load More\" pagination.
+ */
 'use client';
 
 import { useState, useCallback } from 'react';

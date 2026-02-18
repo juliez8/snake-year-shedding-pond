@@ -1,3 +1,7 @@
+/**
+ * Drawing panel UI.
+ * Wraps color picker, canvas, message input, and submit/clear controls.
+ */
 'use client';
 
 import { useState } from 'react';
@@ -84,7 +88,6 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         Draw Your Snake
       </h2>
 
-      {/* Color Picker */}
       <div className="w-full overflow-visible flex-shrink-0">
         <ColorPicker
           selectedColor={selectedColor}
@@ -92,7 +95,6 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         />
       </div>
 
-      {/* Canvas - no frame/border, background matches panel (amber-50) */}
       <div className="w-full flex-shrink-0 flex justify-center">
         <SnakeCanvas
           width={canvasSize}
@@ -104,7 +106,6 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         />
       </div>
 
-      {/* Clear button */}
       <div className="flex justify-end">
         <button
           onClick={handleClear}
@@ -114,7 +115,6 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         </button>
       </div>
 
-      {/* Message textarea */}
       <textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -129,14 +129,12 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
         {message.length}/140
       </div>
 
-      {/* Error message */}
       {error && (
         <div className="text-rose-800 text-base bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] flex-shrink-0">
           {error}
         </div>
       )}
 
-      {/* Submit button */}
       <button
         onClick={handleSubmit}
         disabled={isSubmitting}
