@@ -1,268 +1,201 @@
-# 🐍 Shedding Island
+# Shedding Pond
 
-An anonymous, time-based communal web ritual for Lunar New Year (Year of the Snake). Users draw and decorate a snake, attach a message representing something they wish to shed, and watch it fade over 8 hours.
+A communal web ritual for the Lunar New Year. Users draw a snake, whisper what they wish to release, and watch it fade into a shared pond — anonymous, ephemeral, and meaningful.
 
-## 🎯 Features
+**Live:** [shedding-pond.vercel.app](https://shedding-pond.vercel.app)
 
-- **Mobile-first drawing canvas** with multiple strokes and curated colors
-- **Soft geometric validation** to encourage snake-like drawings
-- **Time-based fading** over 8 hours (client-side calculation, no DB updates)
-- **Island capacity management** with automatic migration to gallery
-- **Rate limiting** (3 submissions per IP per hour)
-- **Minimal, clean design** with responsive layout
+---
 
-## 🛠️ Tech Stack
+## Why I Built This
 
-- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
-- **Backend**: Supabase (Postgres), Upstash Redis
-- **Hosting**: Vercel
+For Spring Festival 2025 (Year of the Snake), I wanted to create something that felt less like a tech project and more like a shared experience — a digital pond where people could let go of something and watch it dissolve. No accounts, no data collection, no permanence. Just a moment of release.
 
-## 📋 Prerequisites
+---
 
-1. Node.js 18+ installed
-2. A Supabase account (free tier works)
-3. An Upstash Redis account (free tier works)
+## Technical Highlights
 
-## 🚀 Quick Start
+### Security (Production-Hardened)
 
-### 1. Clone and Install
+This app is designed to be safely shared with a public audience. Every surface is locked down:
+
+- **Server-side mutations only** — The client-side Supabase key is read-only (`SELECT` via RLS). All inserts, updates, and deletes go through API routes using a service role key that never reaches the browser.
+- **Deep input validation** — Drawing data is validated at the field level: hex color regex, finite coordinate ranges, stroke/point count limits, canvas dimension bounds. Messages are sanitized for control characters, zero-width characters, and bidirectional overrides.
+- **Content moderation** — Profanity filtering via `leo-profanity` with a custom normalization layer that catches evasion tactics: repeated characters (`shittt` → `shit`), character substitutions (`sh1t` → `shit`), and separator insertion (`f.u.c.k` → `fuck`).
+- **Rate limiting** — Per-IP rate limiting (60 req/hour) backed by Supabase with SHA-256 hashed IPs. Fail-closed in production, fail-open in development.
+- **Security headers** — CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy configured in `next.config.js`.
+- **Middleware** — Global request size limits (1MB) and HTTP method filtering on all API routes.
+- **Community moderation** — Report button on each snake, backed by a `reports` table for manual review.
+
+### Architecture
+
+- **Client-server separation** — Two Supabase clients: a public anon client for reads, a server-only service role client for writes. The service role key is never bundled or exposed.
+- **Ephemeral by design** — Snakes fade to 25% opacity over 8 seconds on the island (client-side calculation from `created_at`, no DB polling). The pond is a living, breathing thing.
+- **Island capacity management** — When the pond fills (~25 snakes), the oldest are gracefully migrated to a permanent gallery. Position placement uses collision avoidance with configurable minimum distance.
+- **Paginated gallery** — Gallery loads in pages via a dedicated API route with `Cache-Control` headers, preventing the page from choking on thousands of entries.
+
+### Frontend
+
+- **Canvas drawing engine** — Custom `<canvas>` implementation with DPI-aware rendering, multi-stroke support, and dual input handling (native touch events for mobile, pointer events for desktop).
+- **Responsive pond** — SVG clip-path pond shape with a full decoration system (lily pads, lotus flowers) that adapts between mobile (portrait 3:4) and desktop (landscape 4:3) layouts.
+- **Framer Motion animations** — Snake entry animations, floating lily pad motion, and smooth transitions throughout.
+- **Google Fonts** — Long Cang, a casual Chinese brush handwriting font, for a personal and culturally grounded feel.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Animation | Framer Motion |
+| Database | Supabase (PostgreSQL) |
+| Auth Model | Anonymous (RLS + service role key) |
+| Rate Limiting | Supabase (hashed IP tracking) |
+| Moderation | leo-profanity (in-process) |
+| Hosting | Vercel (serverless) |
+
+---
+
+## Project Structure
+
+```
+├── app/
+│   ├── layout.tsx              # Root layout, metadata, font config
+│   ├── page.tsx                # Pond page (home)
+│   ├── gallery/
+│   │   ├── page.tsx            # Gallery (server component, paginated)
+│   │   └── GalleryClient.tsx   # Gallery client with "Load More"
+│   └── api/
+│       ├── submit/route.ts     # Snake submission (validated, moderated)
+│       ├── gallery/route.ts    # Paginated gallery endpoint
+│       ├── report/route.ts     # Report inappropriate content
+│       └── migrate/route.ts    # Cron-triggered island → gallery migration
+├── components/
+│   ├── Island.tsx              # Pond with decorations, snake rendering, fade logic
+│   ├── SnakeCanvas.tsx         # Drawing canvas (touch + pointer events)
+│   ├── SnakeDisplay.tsx        # Snake renderer (scaled, DPI-aware)
+│   ├── DrawPanel.tsx           # Drawing UI (canvas, color picker, message input)
+│   ├── SnakeModal.tsx          # Snake detail popup with report button
+│   └── ColorPicker.tsx         # Color selection
+├── lib/
+│   ├── supabase.ts             # Dual client setup (anon + service role)
+│   ├── validation.ts           # Deep drawing + message validation
+│   ├── moderation.ts           # Profanity filter with evasion normalization
+│   ├── rateLimit.ts            # Per-IP rate limiting (Supabase-backed)
+│   ├── fade.ts                 # Time-based opacity calculation
+│   └── positions.ts            # Collision-free position generation
+├── middleware.ts                # Global security middleware
+├── next.config.js              # Security headers, CSP
+└── types/
+    └── snake.ts                # Shared TypeScript types
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A [Supabase](https://supabase.com) project (free tier)
+
+### 1. Install
 
 ```bash
+git clone https://github.com/your-username/shedding-island.git
 cd shedding-island
 npm install
 ```
 
-### 2. Set Up Supabase
-
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** and run this schema:
-
-```sql
--- Create snake_segments table
-CREATE TABLE snake_segments (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  drawing_data JSONB NOT NULL,
-  message TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  location TEXT NOT NULL CHECK (location IN ('island', 'gallery')),
-  position_x FLOAT NOT NULL CHECK (position_x >= 0 AND position_x <= 1),
-  position_y FLOAT NOT NULL CHECK (position_y >= 0 AND position_y <= 1)
-);
-
--- Create index on location for faster queries
-CREATE INDEX idx_snake_segments_location ON snake_segments(location);
-
--- Create index on created_at for migration queries
-CREATE INDEX idx_snake_segments_created_at ON snake_segments(created_at);
-
--- Enable Row Level Security
-ALTER TABLE snake_segments ENABLE ROW LEVEL SECURITY;
-
--- Allow public read access
-CREATE POLICY "Allow public read access" ON snake_segments
-  FOR SELECT
-  USING (true);
-
--- Allow public insert access
-CREATE POLICY "Allow public insert access" ON snake_segments
-  FOR INSERT
-  WITH CHECK (true);
-
--- Allow public update for migration (only location field)
-CREATE POLICY "Allow public update for migration" ON snake_segments
-  FOR UPDATE
-  USING (true)
-  WITH CHECK (true);
-```
-
-3. Get your credentials:
-   - Go to **Settings** → **API**
-   - Copy your **Project URL** and **anon/public key**
-
-### 3. Set Up Upstash Redis
-
-1. Create a free account at [upstash.com](https://upstash.com)
-2. Create a new Redis database
-3. Copy the **REST URL** and **REST Token**
-
-### 4. Configure Environment Variables
-
-Create `.env.local` in the project root:
+### 2. Configure Environment
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` with your credentials:
+Fill in your Supabase credentials:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-UPSTASH_REDIS_REST_URL=https://your-redis.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your-redis-token
-
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-### 5. Run Development Server
+### 3. Set Up Database
+
+Run the following in your Supabase SQL Editor:
+
+```sql
+-- Main table
+CREATE TABLE snake_segments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  drawing_data JSONB NOT NULL,
+  message TEXT NOT NULL CHECK (char_length(message) <= 140),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  location TEXT NOT NULL CHECK (location IN ('island', 'gallery')),
+  position_x FLOAT NOT NULL CHECK (position_x >= 0 AND position_x <= 1),
+  position_y FLOAT NOT NULL CHECK (position_y >= 0 AND position_y <= 1)
+);
+
+CREATE INDEX idx_snake_segments_location ON snake_segments(location);
+CREATE INDEX idx_snake_segments_created_at ON snake_segments(created_at);
+
+ALTER TABLE snake_segments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "anon_select" ON snake_segments
+  FOR SELECT USING (true);
+
+-- Rate limiting
+CREATE TABLE rate_limits (
+  ip_hash TEXT PRIMARY KEY,
+  request_count INT NOT NULL DEFAULT 1,
+  window_start TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE rate_limits ENABLE ROW LEVEL SECURITY;
+
+-- Reports
+CREATE TABLE reports (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  snake_id UUID NOT NULL REFERENCES snake_segments(id) ON DELETE CASCADE,
+  message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_reports_snake_id ON reports(snake_id);
+ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
+```
+
+### 4. Run
 
 ```bash
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000)
+### Deploying to Vercel
 
-## 🌐 Deployment (Vercel)
+1. Push to GitHub
+2. Import in [Vercel](https://vercel.com)
+3. Add environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+4. Deploy
 
-### 1. Push to GitHub
+---
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin your-repo-url
-git push -u origin main
-```
+## Design Decisions
 
-### 2. Deploy to Vercel
+| Decision | Reasoning |
+|----------|-----------|
+| No user accounts | Anonymity is core to the ritual — people share more honestly when they're not identified |
+| Client-side fading | Avoids DB writes for visual state; `created_at` is the single source of truth |
+| Supabase for rate limiting | Eliminated Redis dependency while keeping atomic per-IP tracking |
+| In-process moderation | No external API costs or latency; `leo-profanity` + custom normalization catches most evasion |
+| Service role key for writes | Tightest possible RLS — the anon key can only read, period |
+| SHA-256 IP hashing | Privacy-first rate limiting — raw IPs are never stored |
 
-1. Go to [vercel.com](https://vercel.com) and import your repository
-2. Add environment variables in **Settings** → **Environment Variables**:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `UPSTASH_REDIS_REST_URL`
-   - `UPSTASH_REDIS_REST_TOKEN`
-   - `NEXT_PUBLIC_BASE_URL` (set to your Vercel domain after first deploy)
+---
 
-3. Deploy!
+## License
 
-### 3. Update Base URL
-
-After first deployment:
-1. Copy your Vercel domain (e.g., `https://shedding-island.vercel.app`)
-2. Update `NEXT_PUBLIC_BASE_URL` environment variable
-3. Redeploy
-
-## 📁 Project Structure
-
-```
-shedding-island/
-├── app/
-│   ├── layout.tsx           # Root layout
-│   ├── page.tsx             # Island page (home)
-│   ├── globals.css          # Global styles
-│   ├── draw/
-│   │   └── page.tsx         # Drawing page
-│   ├── gallery/
-│   │   ├── page.tsx         # Gallery page (server)
-│   │   └── GalleryClient.tsx # Gallery client component
-│   └── api/
-│       ├── submit/
-│       │   └── route.ts     # Submit snake endpoint
-│       └── migrate/
-│           └── route.ts     # Migration endpoint
-├── components/
-│   ├── Island.tsx           # Island display component
-│   ├── SnakeCanvas.tsx      # Drawing canvas
-│   ├── SnakeDisplay.tsx     # Snake renderer
-│   ├── SnakeModal.tsx       # Message modal
-│   ├── ColorPicker.tsx      # Color selection
-│   └── ToolBar.tsx          # Drawing tools
-├── lib/
-│   ├── supabase.ts          # Supabase client
-│   ├── validation.ts        # Geometry validation
-│   ├── fade.ts              # Opacity calculation
-│   ├── rateLimit.ts         # Rate limiting
-│   └── positions.ts         # Position generation
-└── types/
-    └── snake.ts             # TypeScript types
-```
-
-## 🎨 How It Works
-
-### Drawing Flow
-1. User visits `/draw`
-2. Selects colors and draws multiple strokes
-3. Writes a message (max 140 chars)
-4. Submits → validated → saved to Supabase
-5. Redirected to island
-
-### Validation
-- Checks for elongated aspect ratio (width/height > 1.5 OR height/width > 1.5)
-- Requires minimum stroke length and bounding box size
-- Prevents tiny doodles and overly square shapes
-- Error message: "Your snake needs a little more slither."
-
-### Fading
-- Calculated client-side using `created_at` timestamp
-- Formula: `opacity = max(1 - (hoursPassed / 8), 0.1)`
-- Minimum opacity of 0.1 (never fully disappears)
-- Updates every minute on client
-
-### Island Capacity
-- Max 80 snakes on island
-- When exceeded, oldest 20 migrate to gallery
-- Migration checked on island page load
-- Fading continues in gallery
-
-### Rate Limiting
-- 3 submissions per IP per hour
-- Uses Upstash Redis for state
-- Friendly error message if exceeded
-
-## 🔒 Security
-
-- Uses Supabase anon key with RLS policies
-- Server-side validation in API routes
-- Input sanitization (message trimming)
-- No eval or unsafe HTML
-- Rate limiting to prevent spam
-
-## 🧪 Testing Locally
-
-1. Draw a test snake on `/draw`
-2. Verify it appears on home page
-3. Click snake → modal should show message
-4. Wait a few minutes → refresh → opacity should decrease
-5. Test rate limit by submitting 4 snakes quickly
-
-## 📝 TODO / Future Enhancements
-
-- [ ] Add loading states for async operations
-- [ ] Implement optimistic UI updates
-- [ ] Add snake count limit indicator on draw page
-- [ ] Create admin panel for moderation
-- [ ] Add analytics (simple, privacy-respecting)
-- [ ] Improve mobile touch drawing experience
-- [ ] Add sound effects (optional toggle)
-
-## 🐛 Troubleshooting
-
-### "Failed to fetch snakes"
-- Check Supabase credentials in `.env.local`
-- Verify RLS policies are enabled
-- Check browser console for errors
-
-### Rate limit not working
-- Verify Upstash Redis credentials
-- Check Redis dashboard for connection
-- Ensure `UPSTASH_REDIS_REST_URL` includes `https://`
-
-### Migration not triggering
-- Check `NEXT_PUBLIC_BASE_URL` is correct
-- Verify API route is accessible
-- Check server logs for errors
-
-### Drawing canvas not working on mobile
-- Ensure `touch-none` class is on canvas
-- Check touch event handlers
-- Test on actual device (not just responsive mode)
-
-## 📄 License
-
-MIT - Feel free to use for your own projects!
-
-## 🙏 Acknowledgments
-
-Built for Lunar New Year 2025 - Year of the Snake
+MIT
