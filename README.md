@@ -2,7 +2,7 @@
 
 A communal web ritual for the Lunar New Year. Users draw a snake, whisper what they wish to release, and watch it fade into a shared pond — anonymous, ephemeral, and meaningful.
 
-**Live:** [shedding-pond.vercel.app](https://shedding-pond.vercel.app)
+**Live:** [https://snake-shedding-pond.vercel.app/](https://snake-shedding-pond.vercel.app/)
 
 ---
 
