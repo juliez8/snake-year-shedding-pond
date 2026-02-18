@@ -34,17 +34,13 @@ For Spring Festival 2026, I wanted to build a community based, digital experienc
 - Collision-avoidance positioning on the pond
 - Geometric validation to ensure meaningful submissions
 
-**Ephemeral Design:**
-
-- Snakes fade over time to represent the "shedding" process
-
 **When the pond reaches capacity:**
 - Oldest snakes migrate automatically to a gallery
 - Gallery loads are paginated via API route
 - Prevents performance degradation at scale
 **Capacity + Migration Logic**
 
-**Security + Moderation:**
+## Security + Moderation:
 
 This project is safe to share publicly.
 
@@ -58,7 +54,7 @@ This project is safe to share publicly.
 
 The goal was to make something expressive without opening it to abuse.
 
-**Tech Stack**
+## Tech Stack
 
 - Framework: Next.js 14
 - Language: TypeScript
