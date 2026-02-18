@@ -1,14 +1,14 @@
 # Shedding Pond
 
-A communal web ritual for the Spring Festival/New Year. Users draw a snake, write what they wish to release, and watch it fade into a shared pond — anonymous and meaningful.
+An anonymous, time-based communal web ritual for Lunar New Year (Year of the Snake). Users draw and decorate a snake, attach a message representing something they wish to shed, and watch it fade over 8 hours.
 
-**Live:** [https://snake-shedding-pond.vercel.app/](https://snake-shedding-pond.vercel.app/)
+## 🎯 Features
 
 ---
 
 ## Why I Built This
 
-For Spring Festival 2026 (Year of the Fire Horse), I wanted to create something that felt less like a tech project and more like a shared experience, a digital pond where people could let go of something and watch it dissolve. I'm hoping people come out of using this feeling empowered for the new year especially with a anonymous community by their side.
+For Spring Festival 2025 (Year of the Snake), I wanted to create something that felt less like a tech project and more like a shared experience — a digital pond where people could let go of something and watch it dissolve. No accounts, no data collection, no permanence. Just a moment of release.
 
 ---
 
@@ -16,11 +16,11 @@ For Spring Festival 2026 (Year of the Fire Horse), I wanted to create something 
 
 ### Security (Production-Hardened)
 
-This app is designed to be safely shared with a public audience.
+This app is designed to be safely shared with a public audience. Every surface is locked down:
 
 - **Server-side mutations only** — The client-side Supabase key is read-only (`SELECT` via RLS). All inserts, updates, and deletes go through API routes using a service role key that never reaches the browser.
 - **Deep input validation** — Drawing data is validated at the field level: hex color regex, finite coordinate ranges, stroke/point count limits, canvas dimension bounds. Messages are sanitized for control characters, zero-width characters, and bidirectional overrides.
-- **Content moderation** — Profanity filtering via `leo-profanity` with a custom normalization layer that catches evasion tactics such as repeated characters at the end of innapropriate words.
+- **Content moderation** — Profanity filtering via `leo-profanity` with a custom normalization layer that catches evasion tactics: repeated characters (`shittt` → `shit`), character substitutions (`sh1t` → `shit`), and separator insertion (`f.u.c.k` → `fuck`).
 - **Rate limiting** — Per-IP rate limiting (60 req/hour) backed by Supabase with SHA-256 hashed IPs. Fail-closed in production, fail-open in development.
 - **Security headers** — CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy configured in `next.config.js`.
 - **Middleware** — Global request size limits (1MB) and HTTP method filtering on all API routes.
@@ -104,7 +104,7 @@ This app is designed to be safely shared with a public audience.
 ### 1. Install
 
 ```bash
-git clone https://github.com/your-username/shedding-island.git
+git clone https://github.com/juliez8/snake-year-shedding-pond
 cd shedding-island
 npm install
 ```
