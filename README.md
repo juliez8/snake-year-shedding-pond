@@ -1,8 +1,8 @@
 # Shedding Pond
 
-An anonymous, time-based communal web ritual for Lunar New Year (Year of the Snake). Users draw and decorate a snake, attach a message representing something they wish to shed, and watch it fade over 8 hours.
+A communal web ritual for the Lunar New Year. Users draw a snake, whisper what they wish to release, and watch it fade into a shared pond — anonymous, ephemeral, and meaningful.
 
-## 🎯 Features
+**Live:** [snake-shedding-pond.vercel.app](https://snake-shedding-pond.vercel.app)
 
 ---
 
@@ -104,7 +104,7 @@ This app is designed to be safely shared with a public audience. Every surface i
 ### 1. Install
 
 ```bash
-git clone https://github.com/juliez8/snake-year-shedding-pond
+git clone https://github.com/juliez8/snake-year-shedding-pond.git
 cd shedding-island
 npm install
 ```
