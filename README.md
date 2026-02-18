@@ -37,7 +37,8 @@ For Spring Festival 2026, I wanted to build a community based, digital experienc
 **Ephemeral Design:**
 
 - Snakes fade over time to represent the "shedding" process
-When the pond reaches capacity:
+
+**When the pond reaches capacity:**
 - Oldest snakes migrate automatically to a gallery
 - Gallery loads are paginated via API route
 - Prevents performance degradation at scale
