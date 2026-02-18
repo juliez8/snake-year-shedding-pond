@@ -4,8 +4,8 @@ export type Position = {
 };
 
 // Snakes render at ~150x90px; MIN_DISTANCE keeps centers far enough apart to avoid visual overlap
-const MIN_DISTANCE = 0.26;
-const MAX_ATTEMPTS = 80;
+const MIN_DISTANCE = 0.18;
+const MAX_ATTEMPTS = 200;
 
 function distance(
   x1: number,
