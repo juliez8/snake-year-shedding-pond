@@ -10,7 +10,11 @@ export const revalidate = 60;
 
 const PAGE_SIZE = 60;
 
-async function getGallerySnakes(): Promise<{ snakes: Snake[]; totalCount: number }> {
+async function getGallerySnakes(): Promise<{
+  snakes: Snake[];
+  totalCount: number;
+  pondCount: number;
+}> {
   const supabase = getSupabaseClient();
 
   // Fetch initial page server-side
@@ -23,23 +27,34 @@ async function getGallerySnakes(): Promise<{ snakes: Snake[]; totalCount: number
 
   if (error) {
     console.error('Error fetching gallery snakes:', error);
-    return { snakes: [], totalCount: 0 };
+    return { snakes: [], totalCount: 0, pondCount: 0 };
   }
 
-  // Get total count
-  const { count } = await supabase
+  // Gallery count
+  const { count: galleryCount } = await supabase
     .from('snake_segments')
     .select('*', { count: 'exact', head: true })
     .eq('location', 'gallery');
 
+  // Pond count (for total)
+  const { count: pondCount } = await supabase
+    .from('snake_segments')
+    .select('*', { count: 'exact', head: true })
+    .eq('location', 'island');
+
+  const totalCount = galleryCount ?? 0;
+  const pond = pondCount ?? 0;
+
   return {
     snakes: data || [],
-    totalCount: count ?? 0,
+    totalCount,
+    pondCount: pond,
   };
 }
 
 export default async function GalleryPage() {
-  const { snakes, totalCount } = await getGallerySnakes();
+  const { snakes, totalCount, pondCount } = await getGallerySnakes();
+  const totalSnakes = totalCount + pondCount;
 
   return (
     <div className="min-h-screen min-h-dvh bg-gradient-to-br from-amber-50 via-rose-50 to-orange-100 py-4 px-4 sm:px-6 overflow-x-hidden">
@@ -48,7 +63,7 @@ export default async function GalleryPage() {
           <div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-900">SNAKE GALLERY</h1>
             <p className="text-amber-900 font-semibold text-xl sm:text-xl lg:text-2xl mt-1">
-              {totalCount.toLocaleString()} TOTAL SNAKES
+              {totalSnakes.toLocaleString()} TOTAL SNAKES
             </p>
             <p className="text-amber-800/80 text-lg sm:text-lg lg:text-xl mt-2 max-w-lg">
               Tap any snake to read what was released.
