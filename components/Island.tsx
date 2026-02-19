@@ -361,7 +361,7 @@ export default function Island({ snakes, lastAddedSnakeId, onEntryAnimationCompl
           {snakes.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 10 }}>
               <p className="text-white/60 text-center px-4">
-                The island awaits its first snake...
+                The pond awaits its first snake...
               </p>
             </div>
           )}

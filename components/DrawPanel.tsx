@@ -56,18 +56,39 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || 'Failed to submit');
+        let errMessage = 'Failed to submit';
+        try {
+          const errData = await res.json();
+          if (errData?.error) errMessage = errData.error;
+        } catch {
+          // Server may return non-JSON (e.g. 500 error page)
+        }
+        setError(errMessage);
         setIsSubmitting(false);
         return;
       }
 
-      const data = await res.json();
+      let data: { snake?: { id: string }; addedToGallery?: boolean };
+      try {
+        data = await res.json();
+      } catch {
+        // Success status but body failed to parse (e.g. truncated) — snake may still have been saved
+        setMessage('');
+        setDrawingData(null);
+        setClearTrigger((prev) => prev + 1);
+        setError('Submitted! If you don\'t see your snake, refresh the page.');
+        setIsSubmitting(false);
+        return;
+      }
+
       setMessage('');
       setDrawingData(null);
       setClearTrigger((prev) => prev + 1);
-
-      onSuccess?.({ snakeId: data.snake.id, addedToGallery: data.addedToGallery });
+      if (data?.snake?.id != null) {
+        onSuccess?.({ snakeId: data.snake.id, addedToGallery: data.addedToGallery ?? false });
+      } else {
+        setError('Submitted! If you don\'t see your snake, refresh the page.');
+      }
     } catch {
       setError('Something went wrong.');
     }
@@ -130,7 +151,7 @@ export default function DrawPanel({ onSuccess, compact = false, embedded = false
       </div>
 
       {error && (
-        <div className="text-rose-800 text-base bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] flex-shrink-0">
+        <div role="alert" className="text-rose-800 text-base bg-rose-50/90 border border-rose-200/80 rounded-2xl p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] flex-shrink-0">
           {error}
         </div>
       )}

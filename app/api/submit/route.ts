@@ -11,8 +11,8 @@ import { SnakeSubmission } from '@/types/snake';
 import { generateRandomPosition } from '@/lib/positions';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rateLimit';
 
-const MIGRATE_BATCH_SIZE = 1;
-const MAX_MIGRATE_ATTEMPTS = 3;
+const MIGRATE_BATCH_SIZE = 2;
+const MAX_MIGRATE_ATTEMPTS = 8;
 const MAX_BODY_SIZE = 512 * 1024;
 
 /** POST /api/submit */
@@ -100,12 +100,19 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseClient();
 
-    // Find island position, migrating oldest snakes if needed when full
+    // New snake gets island first; only when full we migrate oldest to gallery and retry
     let existing: { position_x: number; position_y: number }[] = [];
-    const { data: existingData } = await supabase
+    const { data: existingData, error: fetchError } = await supabase
       .from('snake_segments')
       .select('position_x, position_y')
       .eq('location', 'island');
+    if (fetchError) {
+      console.error('Failed to fetch island positions:', fetchError);
+      return NextResponse.json(
+        { error: 'Failed to save snake. Please try again.' },
+        { status: 500, headers: rlHeaders }
+      );
+    }
     existing = existingData || [];
 
     let position = generateRandomPosition(existing);

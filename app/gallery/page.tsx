@@ -58,7 +58,7 @@ export default async function GalleryPage() {
             href="/"
             className="shrink-0 px-5 py-2.5 bg-gradient-to-r from-red-900 via-red-800 to-rose-700 text-amber-50 rounded-xl font-medium shadow-[0_0_10px_rgba(127,29,29,0.5),0_2px_8px_rgba(120,30,30,0.4)] hover:shadow-[0_0_16px_rgba(127,29,29,0.6),0_4px_12px_rgba(120,30,30,0.5)] hover:from-red-950 hover:via-red-900 hover:to-rose-800 transition-all duration-200 text-base sm:text-lg self-start"
           >
-            ← BACK TO ISLAND
+            ← BACK TO POND
           </a>
         </div>
 
@@ -71,7 +71,7 @@ export default async function GalleryPage() {
         {totalCount === 0 && (
           <div className="text-center py-12">
             <p className="text-amber-700/70 font-medium">
-              The gallery is empty. Visit the island to see active snakes.
+              The gallery is empty. Visit the pond to see active snakes.
             </p>
           </div>
         )}
