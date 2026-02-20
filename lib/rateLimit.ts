@@ -7,8 +7,8 @@ import { createHash } from 'crypto';
 import { getSupabaseClient } from '@/lib/supabase';
 
 const isDev = process.env.NODE_ENV !== 'production';
-// Production: per-IP limit; 100 allows shared networks (e.g. campus WiFi) without blocking the crowd
-const MAX_REQUESTS = isDev ? 50 : 100;
+// Production: per-IP limit; 250 for shared networks (e.g. campus WiFi) with heavy use
+const MAX_REQUESTS = isDev ? 50 : 250;
 const WINDOW_SECONDS = isDev ? 600 : 3600; // 10 min in dev, 1 hour in production
 
 export interface RateLimitResult {

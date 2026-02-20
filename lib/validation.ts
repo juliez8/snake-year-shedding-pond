@@ -22,11 +22,7 @@ function isFiniteInRange(value: unknown, min: number, max: number): boolean {
   return typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
 }
 
-/**
- * Deeply validate snake drawing geometry and data integrity.
- * Prevents malicious payloads, non-numeric coordinates, and unsafe color strings.
- */
-/** Validate drawing payload for a single snake. */
+/** Validate drawing geometry and data integrity; prevents bad payloads and unsafe color strings. */
 export function validateSnakeGeometry(drawing: DrawingData): ValidationResult {
   if (!drawing || typeof drawing !== 'object') {
     return { valid: false, error: 'Invalid drawing data.' };
@@ -88,12 +84,7 @@ export function validateSnakeGeometry(drawing: DrawingData): ValidationResult {
   return { valid: true };
 }
 
-/**
- * Sanitize and validate user message input.
- * Strips control characters, zero-width characters, and excessive whitespace.
- * Returns the cleaned message or an error.
- */
-/** Clean and validate the free-text message body. */
+/** Sanitize and validate message: strips control/zero-width chars, normalizes whitespace. */
 export function sanitizeMessage(raw: unknown): { message: string } | { error: string } {
   if (!raw || typeof raw !== 'string') {
     return { error: 'Message is required.' };
